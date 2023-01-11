@@ -1,10 +1,12 @@
+/* eslint-disable */
 import React from 'react';
-import { Text, View } from 'react-native';
-import tw from 'tailwind-react-native-classnames'
+import { Provider as PaperProvider } from 'react-native-paper';
+import { Login } from './screens/Login';
+
 export default function App() {
   return (
-    <View style={tw`flex-1 justify-center items-center bg-blue-200`}>
-      <Text style={tw`text-2xl text-black text-center`}>Welcome to the Grow Simplee Rider's App</Text>
-    </View>
+    <PaperProvider>
+      <Login/>
+    </PaperProvider>
   );
 }
