@@ -1,88 +1,26 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  StatusBar,
-} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {BottomTabBarHeightCallbackContext, createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import ItemToDeliver from './screens/ItemToDeliver';
+import ItemsDelivered from './screens/ItemsDelivered';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import OrderItem from './components/OrderItem';
+const Tab = createBottomTabNavigator();
 
-const DATA = [
-  {
-    item: "Item 1",
-    location: "3/A, Khalisha Kota Palli, Kolkata, West Bengal 700101",
-    price: 100,
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    DeliverBy: "12:00 PM",
-  },
-  {
-    item: "Item 2",
-    location: "3/A, Khalisha Kota Palli, Kolkata, West Bengal 700101",
-    price: 200,
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    DeliverBy: "01:00 PM",
-  },
-  {
-    item: "Item 3",
-    location: "3/A, Khalisha Kota Palli, Kolkata, West Bengal 700101",
-    price: 300,
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    DeliverBy: "02:00 PM",
-  },
-  {
-    item: "Item 4",
-    location: "3/A, Khalisha Kota Palli, Kolkata, West Bengal 700101",
-    price: 100,
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28bb',
-    DeliverBy: "03:00 PM",
-  },
-  {
-    item: "Item 5",
-    location: "3/A, Khalisha Kota Palli, Kolkata, West Bengal 700101",
-    price: 200,
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f64',
-    DeliverBy: "04:00 PM",
-  },
-  {
-    item: "Item 6",
-    location: "3/A, Khalisha Kota Palli, Kolkata, West Bengal 700101",
-    price: 300,
-    id: '58694a0f-3da1-471f-bd96-145571e29d73',
-    DeliverBy: "05:00 PM",
-  },
-];
-
-const App = () => {
-  const renderItem = ({item}) => <OrderItem item={item} />;
-
+export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Items to Deliver</Text>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: '#00ff57',
+          tabBarStyle: {backgroundColor: '#262a35'},
+          tabBarIcon: ({focused, color, size}) => {
+            return <Icon name="rocket" size={30} color="#900" />;
+          },
+        }}>
+        <Tab.Screen name="In queue" component={ItemToDeliver} />
+        <Tab.Screen name="Delivered" component={ItemsDelivered} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-    backgroundColor: '#181820',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  heading: {
-    fontSize: 32,
-    color: '#fcfcfc',
-    margin: 10,
-  },
-});
-
-export default App;
+}

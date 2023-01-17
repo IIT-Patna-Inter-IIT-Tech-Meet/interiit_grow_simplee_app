@@ -1,4 +1,5 @@
 package com.grow_simplee_app;
+import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -23,6 +24,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new MainActivityDelegate(this, getMainComponentName());
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
   }
 
   public static class MainActivityDelegate extends ReactActivityDelegate {
