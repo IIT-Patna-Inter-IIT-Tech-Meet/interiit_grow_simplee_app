@@ -1,10 +1,11 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'tailwind-react-native-classnames';
 
-const ProfilePage = () => {
+export const Profile = () => {
     const [editing, setEditing] = useState(false);
     const [credEditing, setCredEditing] = useState(false);
     const [name, setName] = useState('John Doe');
@@ -28,8 +29,6 @@ const ProfilePage = () => {
         setCredEditing(false);
         // Send data to server
     };
-
-
     return (
         // <SafeAreaView className="flex-1">
         <ScrollView className="flex flex-col p-4 bg-[#181920]">
@@ -260,6 +259,3 @@ const ProfilePage = () => {
         // </SafeAreaView>
     );
 };
-
-export default ProfilePage;
-
