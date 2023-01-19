@@ -30,8 +30,8 @@ export const Profile = () => {
         // Send data to server
     };
     return (
-        // <SafeAreaView className="flex-1">
-        <ScrollView className="flex flex-col p-4 bg-[#181920]">
+        <SafeAreaView className="flex-1 bg-[#181920]">
+        <ScrollView className="flex flex-col p-4 mb-28 bg-[#181920]">
             <Text style={tw`text-3xl font-bold mb-4 text-center text-white`}>Profile</Text>
             <View style={tw`flex items-center`}>
                 <Image
@@ -256,6 +256,6 @@ export const Profile = () => {
                     </View></>
             )}
         </ScrollView>
-        // </SafeAreaView>
+        </SafeAreaView>
     );
 };
