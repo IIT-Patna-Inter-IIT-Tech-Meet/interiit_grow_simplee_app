@@ -1,73 +1,73 @@
 /* eslint-disable */
-import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export const Login = () => {
-  const [userName, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [isPasswordSecure, setIsPasswordSecure] = React.useState(true);
+  const navigation = useNavigation();
+  const [userName, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+  const handleLogin = () => {
+    navigation.navigate('Main');
+  };
   return (
     <SafeAreaView className="flex-1 bg-[#181920]">
       <ScrollView className="flex flex-col">
-        <View className="flex flex-row items-center justify-center pt-24">
+        <View className="flex flex-row pt-20 pl-5 items-center">
           <Image
             source={require('../assets/images/logo.png')}
-            className="w-16 h-16"
+            className="w-10 h-10"
           />
-          <View className="flex flex-col">
-            <Text className="text-4xl font-bold text-white">Grow Simplee</Text>
-            <Text className="text-4xl font-bold text-white">Rider's App</Text>
-          </View>
+          <Text className="text-4xl font-bold text-white">Login</Text>
         </View>
-        <Text className="text-3xl font-medium text-white mt-16 text-left pl-5">
-          Login
-        </Text>
-        <Text className="text-sm text-gray-400 mt-1 text-left pl-5">
-          Please sign in to your account
-        </Text>
 
-        <Text className="mt-16 text-left ml-5 mb-1">Username</Text>
         <View className="flex items-center">
           <TextInput
-            className="bg-[#252a34] w-11/12 h-14 border border-transparent rounded-lg"
-            placeholder="Enter Your Username"
+            className="bg-[#181920] w-11/12 border border-transparent rounded-lg mt-5"
+            label="Username"
+            mode="outlined"
             placeholderTextColor="#9ca3af"
-            selectionColor="#9ca3af"
+            selectionColor="#fff"
             onChangeText={setUsername}
             underlineColor="transparent"
-            theme={{colors: {text: 'black', primary: '#252a34'}}}
+            textColor="white"
+            activeOutlineColor="#04F968"
+            outlineColor="#252a34"
           />
         </View>
-
-        <Text className="mt-5 text-left ml-5 mb-1">Password</Text>
         <View className="flex items-center">
           <TextInput
-            className="bg-[#252a34] w-11/12 h-14 border border-transparent rounded-lg"
-            placeholder="Enter Your Password"
+            className="bg-[#181920] w-11/12 border border-transparent rounded-lg mt-5"
+            label="Password"
+            mode="outlined"
             placeholderTextColor="#9ca3af"
-            selectionColor="#9ca3af"
+            selectionColor="#fff"
             secureTextEntry={isPasswordSecure}
             onChangeText={setPassword}
+            textColor="white"
+            activeOutlineColor="#04F968"
+            outlineColor="#252a34"
             underlineColor="transparent"
-            theme={{colors: {text: 'black', primary: '#252a34'}}}
             right={
               <TextInput.Icon
-                icon={() => 
+                icon={() => (
                   <Icon
                     name={isPasswordSecure ? 'eye-off' : 'eye'}
                     size={24}
                     color="#9ca3af"
                   />
-                }
+                )}
                 onPress={() => {
                   isPasswordSecure
                     ? setIsPasswordSecure(false)
@@ -77,13 +77,21 @@ export const Login = () => {
             }
           />
         </View>
-
+        <View className="flex flex-row pl-5 mt-14 w-3/5 justify-between">
+          <Text className="text-base">Forgot Password? </Text>
+          <TouchableOpacity>
+            <Text className="text-white font-bold text-base">
+              Reset Password
+            </Text>
+          </TouchableOpacity>
+        </View>
         <View className="flex items-center">
-          <Button className="border rounded-xl w-11/12 h-12 bg-[#00ff57] mt-16">
+          <Button
+            className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5"
+            onPress={handleLogin}>
             <Text className="text-gray-900 text-lg">Login</Text>
           </Button>
         </View>
-
       </ScrollView>
     </SafeAreaView>
   );
