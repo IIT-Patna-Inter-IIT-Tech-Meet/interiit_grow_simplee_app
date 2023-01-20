@@ -33,6 +33,7 @@ const Tabs = () => {
       backgroundColor:'black',
       borderRadius:15,
       height:80,
+      borderTopColor: '#000',
       ...style.shadow
     }
     }}>
