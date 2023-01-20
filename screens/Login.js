@@ -34,7 +34,7 @@ export const Login = () => {
 
         <View className="flex items-center">
           <TextInput
-            className="bg-[#181920] w-11/12 border border-transparent rounded-lg mt-5"
+            className="bg-[#181920] w-11/12 border border-transparent rounded-lg mt-5 h-16"
             label="Username"
             mode="outlined"
             placeholderTextColor="#9ca3af"
@@ -48,7 +48,7 @@ export const Login = () => {
         </View>
         <View className="flex items-center">
           <TextInput
-            className="bg-[#181920] w-11/12 border border-transparent rounded-lg mt-5"
+            className="bg-[#181920] w-11/12 border border-transparent rounded-lg mt-5 h-16"
             label="Password"
             mode="outlined"
             placeholderTextColor="#9ca3af"
@@ -78,7 +78,7 @@ export const Login = () => {
           />
         </View>
         <View className="flex flex-row pl-5 mt-14 w-3/5 justify-between">
-          <Text className="text-base">Forgot Password? </Text>
+          <Text className="text-base text-white">Forgot Password? </Text>
           <TouchableOpacity>
             <Text className="text-white font-bold text-base">
               Reset Password

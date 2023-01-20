@@ -13,6 +13,13 @@ import HomeIcon from "react-native-vector-icons/Feather";
 import Notes from "react-native-vector-icons/Foundation";
 import Location from "react-native-vector-icons/SimpleLineIcons";
 import Rider from "react-native-vector-icons/AntDesign";
+import { ProfileNavigator } from './profileNavigator';
+
+const forFade = ({ current }) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
 const Tab = createBottomTabNavigator();
 const Tabs = () => {
@@ -32,22 +39,22 @@ const Tabs = () => {
       <Tab.Screen name="Home" component={Home} options={{
         tabBarIcon:({focused,size}) => (
           <HomeIcon name='home' size={size} color={focused?'#04F968':'#9ca3af'}/>
-        )
+        ),cardStyleInterpolator: forFade
       }} />
       <Tab.Screen name="Rides" component={Rides} options={{
         tabBarIcon:({focused,size}) => (
           <Notes name='clipboard-notes' size={size} color={focused?'#04F968':'#9ca3af'}/>
-        )
+        ),cardStyleInterpolator: forFade
       }}  />
       <Tab.Screen name="Map" component={Maps} options={{
         tabBarIcon:({focused,size}) => (
           <Location name='location-pin' size={size} color={focused?'#04F968':'#9ca3af'}/>
-        )
+        ),cardStyleInterpolator: forFade
       }} />
-      <Tab.Screen name="Account" component={Profile} options={{
+      <Tab.Screen name="Account" component={ProfileNavigator} options={{
         tabBarIcon:({focused,size}) => (
           <Rider name='user' size={size} color={focused?'#04F968':'#9ca3af'}/>
-        )
+        ),cardStyleInterpolator: forFade
       }} />
     </Tab.Navigator>
   );
