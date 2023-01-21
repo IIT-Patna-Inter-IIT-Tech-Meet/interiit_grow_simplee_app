@@ -73,7 +73,7 @@ export const Splash = ({isAppReady}) => {
         resizeMode="contain"
       />
       <Animated.Text
-        className="text-white text-3xl"
+        className="text-[#04F968] text-4xl text-bold"
         fadeDuration={0}
         onLoad={() => {
           setState(FADE_IN_IMAGE);
