@@ -38,7 +38,8 @@ export const ProfileNavigator = () => {
         <ProfileStack.Screen name="Profile" component={Profile} options={{ cardStyleInterpolator: forFade }} />
       </ProfileStack.Group>
       <ProfileStack.Group screenOptions={{headerShown:false}}>
-        <ProfileStack.Screen name="EditProfile" component={EditProfile} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} />
+        {/* <ProfileStack.Screen name="EditProfile" component={EditProfile} options={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} /> */}
+        <ProfileStack.Screen name="EditProfile" component={EditProfile} options={RighttoLeftAnimation} />
       </ProfileStack.Group>
       <ProfileStack.Group screenOptions={{headerShown:false}}>
         <ProfileStack.Screen name="CustomerSupport" component={CustomerSupport} options={ RighttoLeftAnimation} />
