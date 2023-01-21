@@ -5,7 +5,6 @@ import { StyleSheet } from 'react-native';
 //screens
 import { Home } from '../screens/Home';
 import { Maps } from '../screens/Map';
-import { Profile } from '../screens/Profile';
 import { Rides } from '../screens/Rides';
 
 //icons
@@ -13,6 +12,8 @@ import HomeIcon from "react-native-vector-icons/Feather";
 import Notes from "react-native-vector-icons/Foundation";
 import Location from "react-native-vector-icons/SimpleLineIcons";
 import Rider from "react-native-vector-icons/AntDesign";
+
+//navigation
 import { ProfileNavigator } from './profileNavigator';
 
 const forFade = ({ current }) => ({

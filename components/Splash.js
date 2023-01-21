@@ -72,8 +72,22 @@ export const Splash = ({isAppReady}) => {
         style={[style.image, {opacity: imageOpacity}]}
         resizeMode="contain"
       />
-      <Text className="text-white text-3xl">GROW SIMPLEE</Text>
-      <Text className="text-white text-base">Rider's App</Text>
+      <Animated.Text
+        className="text-white text-3xl"
+        fadeDuration={0}
+        onLoad={() => {
+          setState(FADE_IN_IMAGE);
+        }}>
+        GROW SIMPLEE
+      </Animated.Text>
+      <Animated.Text
+        className="text-white text-base"
+        fadeDuration={0}
+        onLoad={() => {
+          setState(FADE_IN_IMAGE);
+        }}>
+        Rider's App
+      </Animated.Text>
     </Animated.View>
   );
 };
