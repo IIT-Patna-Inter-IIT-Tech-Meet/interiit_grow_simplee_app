@@ -22,6 +22,8 @@ const forFade = ({ current }) => ({
   },
 });
 
+
+
 const Tab = createBottomTabNavigator();
 const Tabs = () => {
   return (
