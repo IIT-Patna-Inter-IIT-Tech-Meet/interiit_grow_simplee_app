@@ -1,4 +1,5 @@
 /* eslint-disable */
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,7 +9,6 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
 import OrderItem from '../components/OrderItem';
