@@ -1,18 +1,37 @@
 /* eslint-disable */
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import React, { useState, useEffect} from "react";
-import  { MapView, Marker, Polyline, MapViewDirections } from "react-native-maps";
+// import  { MapView, Marker, Polyline, MapViewDirections } from "react-native-maps";
+import MapView, {Marker} from 'react-native-maps';
 import { StyleSheet } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import haversine from "haversine";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    flex: 1,
-  },
+  // container: {
+  //   flex: 1,
+  // },
+  // map: {
+  //   flex: 1,
+  //   height: 400,
+  //   width: 400,
+  // },
+    container: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+    map: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
   instructions: {
     fontSize: 20,
     margin: 10,
@@ -66,7 +85,7 @@ export const Maps = () => {
         });
       },
       (error) => console.log(error),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      { enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000 }
     );
   }, []);
 
@@ -95,48 +114,58 @@ export const Maps = () => {
   };
   return (
     <View style={styles.container}>
-      {console.log(currentLocation) && console.log(nearest)}
-      {currentLocation && nearest ? (
-      <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: currentLocation.latitude,
-            longitude: currentLocation.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          {deliveries.map((delivery) => (
-            <Marker
-              key={`delivery-${delivery.latitude}-${delivery.longitude}`}
-              coordinate={delivery}
-              onPress={() => handleOnPress(delivery)}
-            />
-          ))}
-          {pickups.map((pickup) => (
-            <Marker
-              key={`pickup-${pickup.latitude}-${pickup.longitude}`}
-              coordinate={pickup}
-            />
-          ))}
-          <Polyline
-            coordinates={route ? route.coordinates : []}
-            strokeWidth={4}
-            strokeColor="#000"
-          />
-          <Marker coordinate={currentLocation} />
-          <Marker coordinate={nearest} />
-          <MapViewDirections
-            origin={currentLocation}
-            destination={nearest}
-            apikey={GOOGLE_MAPS_APIKEY}
-            strokeWidth={4}
-            strokeColor="#000"
-            onReady={handleRouteReady}
-            onError={(error) => console.log(error)}
-          />
-        </MapView>
-      ) : null}
-    </View>
+    <MapView
+    style={styles.map}
+    initialRegion={{
+      latitude: 37.78825,
+      longitude: -122.4324,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    }}/>
+  </View>
+    // <View style={styles.container}>
+    //   {console.log(currentLocation) && console.log(nearest)}
+    //   {currentLocation && nearest ? (
+    //   <MapView
+    //       style={styles.map}
+    //       initialRegion={{
+    //         latitude: currentLocation.latitude,
+    //         longitude: currentLocation.longitude,
+    //         latitudeDelta: 0.0922,
+    //         longitudeDelta: 0.0421,
+    //       }}
+    //     >
+    //       {deliveries.map((delivery) => (
+    //         <Marker
+    //           key={`delivery-${delivery.latitude}-${delivery.longitude}`}
+    //           coordinate={delivery}
+    //           onPress={() => handleOnPress(delivery)}
+    //         />
+    //       ))}
+    //       {pickups.map((pickup) => (
+    //         <Marker
+    //           key={`pickup-${pickup.latitude}-${pickup.longitude}`}
+    //           coordinate={pickup}
+    //         />
+    //       ))}
+    //       <Polyline
+    //         coordinates={route ? route.coordinates : []}
+    //         strokeWidth={4}
+    //         strokeColor="#000"
+    //       />
+    //       <Marker coordinate={currentLocation} />
+    //       <Marker coordinate={nearest} />
+    //       <MapViewDirections
+    //         origin={currentLocation}
+    //         destination={nearest}
+    //         apikey={GOOGLE_MAPS_APIKEY}
+    //         strokeWidth={4}
+    //         strokeColor="#000"
+    //         onReady={handleRouteReady}
+    //         onError={(error) => console.log(error)}
+    //       />
+    //     </MapView>
+    //   ) : null}
+    // </View>
   );
 };
