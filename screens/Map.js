@@ -1,9 +1,10 @@
 /* eslint-disable */
 import {View, Text, SafeAreaView, ScrollView} from 'react-native';
 import React, { useState, useEffect} from "react";
-import MapView, { Marker, Polyline } from "react-native-maps";
+import  { MapView, Marker, Polyline, MapViewDirections } from "react-native-maps";
 import { StyleSheet } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
+import haversine from "haversine";
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +20,39 @@ const styles = StyleSheet.create({
 });
 const GOOGLE_MAPS_APIKEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg'
 
-export const Maps = ({ deliveries, pickups }) => {
+const deliveries = [
+  {
+  latitude: 37.78825,
+  longitude: -122.4324,
+},
+{
+  latitude: 37.819888,
+  longitude: -122.485841,
+},
+{
+  latitude: 37.766311,
+  longitude: -122.434468,
+}
+];
+
+const pickups = [
+  {
+  latitude: 37.790074,
+  longitude: -122.419541,
+},
+{
+  latitude: 37.779608,
+  longitude: -122.401567,
+},
+{
+  latitude: 37.770735,
+  longitude: -122.465636,
+}
+];
+
+export const Maps = () => {
+  console.log(deliveries)
+  console.log(pickups)
   const [currentLocation, setCurrentLocation] = useState(null);
   const [route, setRoute] = useState(null);
   const [nearest, setNearest] = useState(null);
@@ -62,6 +95,7 @@ export const Maps = ({ deliveries, pickups }) => {
   };
   return (
     <View style={styles.container}>
+      {console.log(currentLocation) && console.log(nearest)}
       {currentLocation && nearest ? (
       <MapView
           style={styles.map}

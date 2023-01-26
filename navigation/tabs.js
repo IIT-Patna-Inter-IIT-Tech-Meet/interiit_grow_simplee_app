@@ -22,35 +22,7 @@ const forFade = ({ current }) => ({
   },
 });
 
-const deliveries = [
-  {
-  latitude: 37.78825,
-  longitude: -122.4324,
-},
-{
-  latitude: 37.819888,
-  longitude: -122.485841,
-},
-{
-  latitude: 37.766311,
-  longitude: -122.434468,
-}
-];
 
-const pickups = [
-  {
-  latitude: 37.790074,
-  longitude: -122.419541,
-},
-{
-  latitude: 37.779608,
-  longitude: -122.401567,
-},
-{
-  latitude: 37.770735,
-  longitude: -122.465636,
-}
-];
 
 const Tab = createBottomTabNavigator();
 const Tabs = () => {
@@ -78,7 +50,7 @@ const Tabs = () => {
           <Notes name='clipboard-notes' size={size} color={focused?'#04F968':'#9ca3af'}/>
         ),cardStyleInterpolator: forFade
       }}  />
-      <Tab.Screen name="Map" component={Maps} initialParams={{deliveries , pickups}} options={{
+      <Tab.Screen name="Map" component={Maps} options={{
         tabBarIcon:({focused,size}) => (
           <Location name='location-pin' size={size} color={focused?'#04F968':'#9ca3af'}/>
         ),cardStyleInterpolator: forFade
