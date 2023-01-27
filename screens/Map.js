@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
+import MapViewDirections from 'react-native-maps-directions';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,7 +65,7 @@ export const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [route, setRoute] = useState(null);
   const [nearest, setNearest] = useState(null);
-  // const [deliveries, setDeliveries] = useState([]);
+  const [delivery, setDelivery] = useState(pickups);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -100,7 +101,8 @@ export const Maps = () => {
 
   const handleOnPress = point => {
     // remove delivery point after delivery
-    // setDeliveries(deliveries.filter((delivery) => delivery !== point));
+    // setDelivery(delivery.filter((delivery) => delivery !== point));
+    console.log(delivery)
     console.log(point);
   };
   return (
@@ -123,11 +125,12 @@ export const Maps = () => {
               onPress={() => handleOnPress(delivery)}
             />
           ))}
-          {pickups.map(pickup => (
+          {delivery.map(pickup => (
             <Marker
               key={`pickup-${pickup.latitude}-${pickup.longitude}`}
               coordinate={pickup}
               pinColor={'green'}
+              onPress={() => handleOnPress(pickup)}
             />
           ))}
           <Polyline
@@ -138,15 +141,16 @@ export const Maps = () => {
           {/* {console.log(currentLocation)} */}
           <Marker coordinate={currentLocation} />
           {/* <Marker coordinate={nearest} /> */}
-          {/* <MapViewDirections
+          <MapViewDirections
             origin={currentLocation}
             destination={nearest}
             apikey={GOOGLE_MAPS_API_KEY}
+            mode = "DRIVING"
             strokeWidth={4}
             strokeColor="#000"
             onReady={handleRouteReady}
             onError={(error) => console.log(error)}
-          /> */}
+          />
         </MapView>
       ) : null}
     </View>
