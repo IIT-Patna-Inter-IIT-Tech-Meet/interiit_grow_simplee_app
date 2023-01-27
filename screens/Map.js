@@ -66,6 +66,7 @@ export const Maps = () => {
   const [route, setRoute] = useState(null);
   const [nearest, setNearest] = useState(null);
   const [delivery, setDelivery] = useState(pickups);
+  const [points, setPoints] = useState([...deliveries, ...pickups]);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -82,9 +83,9 @@ export const Maps = () => {
 
   useEffect(() => {
     if (!currentLocation) return;
-    const allPoints = [...deliveries, ...pickups];
-    let nearestPoint = allPoints[0];
-    allPoints.forEach(point => {
+    // const allPoints = [...deliveries, ...pickups];
+    let nearestPoint = points[0];
+    points.forEach(point => {
       if (
         haversine(currentLocation, point) <
         haversine(currentLocation, nearestPoint)
@@ -93,7 +94,7 @@ export const Maps = () => {
       }
     });
     setNearest(nearestPoint);
-  }, [currentLocation, deliveries, pickups]);
+  }, [currentLocation, deliveries, pickups, points]);
 
   const handleRouteReady = route => {
     setRoute(route);
@@ -102,6 +103,7 @@ export const Maps = () => {
   const handleOnPress = point => {
     // remove delivery point after delivery
     // setDelivery(delivery.filter((delivery) => delivery !== point));
+    setPoints(points.filter((delivery) => delivery !== point));
     console.log(delivery)
     console.log(point);
   };
@@ -118,21 +120,22 @@ export const Maps = () => {
           }}>
           {/* {deliveries.map((delivery) =>{console.log(delivery);)})} */}
 
-          {deliveries.map(delivery => (
+          {points.map(delivery => (
             <Marker
               key={`delivery-${delivery.latitude}-${delivery.longitude}`}
               coordinate={delivery}
               onPress={() => handleOnPress(delivery)}
+              
             />
           ))}
-          {delivery.map(pickup => (
+          {/* {delivery.map(pickup => (
             <Marker
               key={`pickup-${pickup.latitude}-${pickup.longitude}`}
               coordinate={pickup}
               pinColor={'green'}
               onPress={() => handleOnPress(pickup)}
             />
-          ))}
+          ))} */}
           <Polyline
             coordinates={route ? route.coordinates : []}
             strokeWidth={4}
@@ -144,6 +147,7 @@ export const Maps = () => {
           <MapViewDirections
             origin={currentLocation}
             destination={nearest}
+            optimizeWaypoints={true}
             apikey={GOOGLE_MAPS_API_KEY}
             mode = "DRIVING"
             strokeWidth={4}
