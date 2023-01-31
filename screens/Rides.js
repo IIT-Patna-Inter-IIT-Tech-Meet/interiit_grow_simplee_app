@@ -8,6 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export const Rides = () => {
   const [name, setName] = useState('John Doe');
+  const navigation = useNavigation();
   return (
     <SafeAreaView className="flex-1 bg-[#181920]">
       <LinearGradient
@@ -33,7 +34,7 @@ export const Rides = () => {
                 <Text className="text-gray-300">Total Earned</Text>
               </View>
             </TouchableOpacity> */}
-            <TouchableOpacity className="flex-1 items-center flex-row justify-evenly bg-[#121417] h-32 w-11/12 rounded-xl my-5 ">
+            <TouchableOpacity className="flex-1 items-center flex-row justify-evenly bg-[#121417] h-32 w-11/12 rounded-xl my-5 " onPress={() => navigation.navigate('TotalRides')}>
               <View className="rounded-full bg-[#387ee847] h-24 w-24 items-center justify-center">
                 <Icon name="map" size={40} color="#387EE8"></Icon>
               </View>
@@ -42,7 +43,7 @@ export const Rides = () => {
                 <Text className="text-gray-300">Total Rides Completed</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity className="flex-1 items-center flex-row justify-evenly bg-[#121417] h-32 w-11/12 rounded-xl my-5 ">
+            <TouchableOpacity className="flex-1 items-center flex-row justify-evenly bg-[#121417] h-32 w-11/12 rounded-xl my-5 " onPress={() => navigation.navigate('DeliveryAccuracy')}>
               <View className="rounded-full bg-[#387ee847] h-24 w-24 items-center justify-center">
                 <Icon name="percent" size={40} color="#387EE8"></Icon>
               </View>

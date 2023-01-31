@@ -4,8 +4,9 @@ import { StyleSheet } from 'react-native';
 
 //screens
 import { HomeNavigator } from '../navigation/homeNavigator';
+import { RidesNavigator } from '../navigation/ridesNavigator';
+import { ProfileNavigator } from './profileNavigator';
 import { Maps } from '../screens/Map';
-import { Rides } from '../screens/Rides';
 
 //icons
 import HomeIcon from "react-native-vector-icons/Feather";
@@ -13,8 +14,6 @@ import Notes from "react-native-vector-icons/Foundation";
 import Location from "react-native-vector-icons/SimpleLineIcons";
 import Rider from "react-native-vector-icons/AntDesign";
 
-//navigation
-import { ProfileNavigator } from './profileNavigator';
 
 const forFade = ({ current }) => ({
   cardStyle: {
@@ -40,12 +39,12 @@ const Tabs = () => {
       ...style.shadow
     }
     }}>
-      <Tab.Screen name="Home" component={HomeNavigator} options={{
+      <Tab.Screen name="HomeNavigator" component={HomeNavigator} options={{
         tabBarIcon:({focused,size}) => (
           <HomeIcon name='home' size={size} color={focused?'#04F968':'#9ca3af'}/>
         ),cardStyleInterpolator: forFade
       }} />
-      <Tab.Screen name="Rides" component={Rides} options={{
+      <Tab.Screen name="RidesNavigator" component={RidesNavigator} options={{
         tabBarIcon:({focused,size}) => (
           <Notes name='clipboard-notes' size={size} color={focused?'#04F968':'#9ca3af'}/>
         ),cardStyleInterpolator: forFade
