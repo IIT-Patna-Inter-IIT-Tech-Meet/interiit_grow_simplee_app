@@ -4,7 +4,7 @@ import circle from '../assets/images/Ellipse.png';
 import square from '../assets/images/square.png';
 import line from '../assets/images/line.png';
 
-const OrderItem = ({item}) => {
+const OrderItem = ({item,navigation}) => {
   return (
     <View style={styles.item}>
       <View
@@ -50,7 +50,7 @@ const OrderItem = ({item}) => {
         </View>
       </View>
 
-      <Pressable style={styles.btn} onPress={() => console.log('Pressed')}>
+      <Pressable style={styles.btn} onPress={() => navigation.navigate('VerifyDelivery')}>
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <Text style={{color: '#3EEF85', fontSize: 13}}>Verify Delivery </Text>
           <Text style={{color: '#3EEF85', fontSize: 20}}>{'>'}</Text>

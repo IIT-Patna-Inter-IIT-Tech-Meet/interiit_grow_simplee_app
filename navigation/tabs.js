@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 
 //screens
-import { Home } from '../screens/Home';
+import { HomeNavigator } from '../navigation/homeNavigator';
 import { Maps } from '../screens/Map';
 import { Rides } from '../screens/Rides';
 
@@ -40,7 +40,7 @@ const Tabs = () => {
       ...style.shadow
     }
     }}>
-      <Tab.Screen name="Home" component={Home} options={{
+      <Tab.Screen name="Home" component={HomeNavigator} options={{
         tabBarIcon:({focused,size}) => (
           <HomeIcon name='home' size={size} color={focused?'#04F968':'#9ca3af'}/>
         ),cardStyleInterpolator: forFade
