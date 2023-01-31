@@ -33,11 +33,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         margin: 10,
     },
-    location: {
-        fontSize: 12,
-        color: '#ffffff',
-        marginLeft: 5,
-    },
 });
 
 const item = {
@@ -82,19 +77,19 @@ export const VerifyDelivery = () => {
         <SafeAreaView className="flex-1 bg-[#181920]">
             <View className="flex mt-8 h-full">
                 <View className="flex ml-6 align-middle ">
-                    <View className="flex-1 items-center flex-row">
-                        <Image style={{ width: 10, height: 10 }} source={circle} />
-                        <Text style={styles.location}>{item.warehouse}</Text>
+                    <View className="flex items-center flex-row">
+                        <Image style={{ width: 20, height: 20 }} source={circle} />
+                        <Text className="text-white text-lg font-semibold ml-5">{item.warehouse}</Text>
                     </View>
 
-                    <Image source={line} width={2} height={18} style={{ marginLeft: 4 }} />
+                    <Image source={line} width={2} height={18} style={{ marginLeft: 8}} />
 
-                    <View className="flex-1 items-center flex-row">
+                    <View className="flex items-center flex-row">
                         <Image
-                            style={{ width: 10, height: 10, marginTop: 3 }}
+                            style={{ width: 20, height: 20 }}
                             source={square}
                         />
-                        <Text style={styles.location}>{item.warehouse}</Text>
+                        <Text className="text-white text-lg font-semibold ml-5">{item.location}</Text>
                     </View>
                 </View>
                 {currentLocation ? (
@@ -135,7 +130,7 @@ export const VerifyDelivery = () => {
                         </MapView>
                     </View>) : null}
 
-                <View className="flex flex-col top-[60%] ml-8 mr-8">
+                <View className="flex flex-col top-[50%] ml-8 mr-8">
                     <View className="flex justify-between flex-row">
                         <Text className="text-white text-lg font-semibold">Distance</Text>
                         <Text className="text-white text-lg font-semibold">3Km</Text>
@@ -147,7 +142,7 @@ export const VerifyDelivery = () => {
 
                 </View>
 
-                <View className="flex items-center top-[60%]">
+                <View className="flex items-center top-[50%]">
                     <Button
                         className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5">
                         <Text className="text-gray-900 text-lg">Confirm Delivery</Text>
