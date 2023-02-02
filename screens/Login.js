@@ -13,12 +13,32 @@ import {Button, TextInput} from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+// *********************************************************
+// IMPORTANT: Change this to your local IP address
+const host = "192.168.0.108:5000";
+// *********************************************************
+
 export const Login = () => {
   const navigation = useNavigation();
-  const [userName, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
-  const handleLogin = () => {
+  const handleLogin = async() => {
+    let body = { "email": email, "password": password };
+    try {
+      const response = await fetch(`http://${host}/rider/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      const data = await response.json();
+      console.log(data);
+    }
+    catch (err) {
+      console.log(err);
+    }
     navigation.navigate('Main');
   };
   return (
@@ -35,11 +55,11 @@ export const Login = () => {
         <View className="flex items-center">
           <TextInput
             className="bg-[#181920] w-11/12 border border-transparent rounded-lg mt-5 h-16"
-            label="Username"
+            label="Email"
             mode="outlined"
             placeholderTextColor="#9ca3af"
             selectionColor="#fff"
-            onChangeText={setUsername}
+            onChangeText={setEmail}
             underlineColor="transparent"
             textColor="white"
             activeOutlineColor="#04F968"
