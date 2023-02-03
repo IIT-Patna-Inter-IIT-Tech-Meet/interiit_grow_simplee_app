@@ -3,9 +3,29 @@ import React from 'react';
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-
+import CookieManager from '@react-native-cookies/cookies';
+// *********************************************************
+// IMPORTANT: Change this to your local IP address
+const host = "192.168.0.108:5000";
+// *********************************************************
 const Splash2 = () => {
   const navigation = useNavigation();
+
+  const handleLoginNavigation = () => {
+  
+      CookieManager.get(`http://${host}/rider/login`)
+        .then((cookies) => {
+          console.log('CookieManager.get =>', cookies);
+          // console.log(typeof(cookies))
+          if (JSON.stringify(cookies)) {
+            console.log("No cookies");
+            navigation.navigate('Login');
+          }
+          else{
+            // navigation.navigate('MainScreen');
+          }
+        })
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-[#181920]">
@@ -22,7 +42,7 @@ const Splash2 = () => {
               Increase Your Sales
             </Text>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Login')}
+              onPress={handleLoginNavigation}
               className="border-2 py-3 rounded-xl align-middle items-center mt-24 w-11/12 bg-[#181920] border-[#04F968]">
               <Text className="text-[#04F968] text-lg">Log in</Text>
             </TouchableOpacity>

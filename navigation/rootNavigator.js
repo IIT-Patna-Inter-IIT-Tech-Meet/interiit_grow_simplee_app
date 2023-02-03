@@ -1,7 +1,8 @@
 /* eslint-disable */
 import TabNavigator from './tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { LoginNavigator } from './loginNavigator';
+import CookieManager from '@react-native-cookies/cookies';
 
 const RootStack = createStackNavigator();
 const forFade = ({ current }) => ({
@@ -12,10 +13,11 @@ const forFade = ({ current }) => ({
 export const RootNavigator = () => {
   return (
     <RootStack.Navigator>
-      <RootStack.Group screenOptions={{headerShown:false}}>
-        <RootStack.Screen name="LoginNavigator" component={LoginNavigator} options={{ cardStyleInterpolator: forFade }}/>
+      <RootStack.Group screenOptions={{ headerShown: false }}>
+        <RootStack.Screen name="LoginNavigator" component={LoginNavigator} options={{ cardStyleInterpolator: forFade }} />
       </RootStack.Group>
-      <RootStack.Group screenOptions={{headerShown:false}}>
+
+      <RootStack.Group screenOptions={{ headerShown: false }}>
         <RootStack.Screen name="Main" component={TabNavigator} options={{ cardStyleInterpolator: forFade }} />
       </RootStack.Group>
     </RootStack.Navigator>
