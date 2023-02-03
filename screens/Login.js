@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import CookieManager from '@react-native-cookies/cookies';
 import {
   ScrollView,
   StyleSheet,
@@ -9,7 +10,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {Button, TextInput} from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -23,8 +24,9 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
-  const handleLogin = async() => {
+  const handleLogin = async () => {
     let body = { "email": email, "password": password };
+    // console.log(body);
     try {
       const response = await fetch(`http://${host}/rider/login`, {
         method: 'POST',
@@ -33,13 +35,44 @@ export const Login = () => {
         },
         body: JSON.stringify(body),
       });
+      // Flushing the old cookies to prevent any issues
+      await CookieManager.clearAll()
+        .then((success) => {
+          // console.log('CookieManager.clearAll =>', success);
+        });
+
       const data = await response.json();
-      console.log(data);
+
+      if (response.status === 200) {
+        await CookieManager.setFromResponse(`http://${host}/rider/login`, response.headers.get('set-cookie'))
+          .then((res) => {
+            // `res` will be true or false depending on success.
+            // console.log('CookieManager.setFromResponse =>', res);
+          });
+        console.log(data);
+        // CookieManager.get(`http://${host}/rider/login`)
+        //   .then((cookies) => {
+        //     console.log('CookieManager.get =>', cookies);
+        //   });
+        navigation.navigate('Main');
+      }
+      else if (response.status === 401) {
+        console.log("Unauthorized Access");
+        console.log(data);
+      }
+      else if (response.status === 401) {
+        console.log("Malformed Request");
+        console.log(data);
+      }
+
+      else {
+        console.log("Login failed");
+        console.log(data);
+      }
     }
     catch (err) {
       console.log(err);
     }
-    navigation.navigate('Main');
   };
   return (
     <SafeAreaView className="flex-1 bg-[#181920]">

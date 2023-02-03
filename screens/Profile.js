@@ -4,6 +4,12 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import CookieManager from '@react-native-cookies/cookies';
+
+// *********************************************************
+// IMPORTANT: Change this to your local IP address
+const host = "192.168.0.108:5000";
+// *********************************************************
 
 export const Profile = () => {
   const navigation = useNavigation();
@@ -11,8 +17,28 @@ export const Profile = () => {
   const [email, setEmail] = useState('johndoe@example.com');
   const [UserId, setUserId] = useState('12345');
 
-  const handleLogout = () => {
-    navigation.navigate('Login');
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`http://${host}/rider/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data)
+        await CookieManager.clearAll()
+          .then((success) => {
+            // console.log('CookieManager.clearAll =>', success);
+          });
+        navigation.navigate('Login');
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
   };
 
   return (
