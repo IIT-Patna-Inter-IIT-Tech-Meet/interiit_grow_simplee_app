@@ -2,6 +2,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import CookieManager from '@react-native-cookies/cookies';
+import {AsyncStorage} from 'react-native';
 import {
   ScrollView,
   StyleSheet,
@@ -50,6 +51,17 @@ export const Login = () => {
             // console.log('CookieManager.setFromResponse =>', res);
           });
         console.log(data);
+        await AsyncStorage.setItem("rider_data",JSON.stringify(data));
+        // await AsyncStorage.setItem("rider_email",data.rider.email);
+        // await AsyncStorage.setItem("rider_phone",data.rider.phoneno);
+        // await AsyncStorage.setItem("rider_id",data.rider._id);
+        // await AsyncStorage.setItem("rider_bloodGroup",data.rider.bloodGroup);
+
+
+
+
+        // const value = await AsyncStorage.getItem('rider_data');
+        // console.log(value);
         // CookieManager.get(`http://${host}/rider/login`)
         //   .then((cookies) => {
         //     console.log('CookieManager.get =>', cookies);

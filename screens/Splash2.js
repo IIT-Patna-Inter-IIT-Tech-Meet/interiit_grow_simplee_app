@@ -15,14 +15,14 @@ const Splash2 = () => {
   
       CookieManager.get(`http://${host}/rider/login`)
         .then((cookies) => {
-          console.log('CookieManager.get =>', cookies);
-          // console.log(typeof(cookies))
-          if (JSON.stringify(cookies)) {
-            console.log("No cookies");
-            navigation.navigate('Login');
+          // console.log('CookieManager.get =>', cookies);
+          // console.log(JSON.stringify(cookies))
+          if (JSON.stringify(cookies)!='{}') {
+            // console.log("No cookies");
+            navigation.navigate('MainScreen');
           }
           else{
-            // navigation.navigate('MainScreen');
+            navigation.navigate('Login');
           }
         })
   }

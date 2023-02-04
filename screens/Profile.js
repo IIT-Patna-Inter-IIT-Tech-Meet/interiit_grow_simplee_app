@@ -1,10 +1,12 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import CookieManager from '@react-native-cookies/cookies';
+import { AsyncStorage } from 'react-native';
+
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
@@ -16,6 +18,17 @@ export const Profile = () => {
   const [name, setName] = useState('John Doe');
   const [email, setEmail] = useState('johndoe@example.com');
   const [UserId, setUserId] = useState('12345');
+
+  useEffect(() => {
+    const getRiderDetails = async () => {
+      const rider_info = await AsyncStorage.getItem('rider_data');
+      const rider_data = JSON.parse(rider_info);
+      setName(rider_data.rider.name);
+      setEmail(rider_data.rider.email);
+      setUserId(rider_data.rider.id.slice(-11));
+    }
+    getRiderDetails();
+  }, [])
 
   const handleLogout = async () => {
     try {

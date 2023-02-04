@@ -8,13 +8,14 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
 import OrderItem from '../components/OrderItem';
 import user from '../assets/images/user.png';
 import arrow from '../assets/images/arrw.png';
 import { useNavigation } from '@react-navigation/native';
+import { AsyncStorage } from 'react-native';
 
 
 const items = [
@@ -76,6 +77,19 @@ const items = [
 
 export const Home = () => {
   const navigation = useNavigation();
+  const [rider_name, setRiderName] = React.useState('Rider');
+
+  useEffect(() => {
+    const getRiderName = async () => {
+      const rider_info = await AsyncStorage.getItem('rider_data');
+      const rider_data = JSON.parse(rider_info);
+      setRiderName(rider_data.rider.name);
+    }
+    getRiderName();
+  }, [])
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
@@ -83,12 +97,12 @@ export const Home = () => {
         style={styles.linearGradient}>
         <View style={styles.header}>
           <View>
-            <Image source={user} style={{marginRight: 10}} />
+            <Image source={user} style={{ marginRight: 10 }} />
           </View>
-          <View style={{flex: 1, flexDirection: 'column'}}>
-            <Text style={{color: '#ffffff', fontSize: 16}}>Welcome, John</Text>
-            <Pressable onPress={()=>{console.log("Pressed!")}}>
-              <Text style={{color: '#ffffff', fontSize: 12}}>
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+            <Text style={{ color: '#ffffff', fontSize: 16 }}>Welcome, {rider_name}</Text>
+            <Pressable onPress={() => { console.log("Pressed!") }}>
+              <Text style={{ color: '#ffffff', fontSize: 12 }}>
                 Overall trip performance <Image source={arrow} />
               </Text>
             </Pressable>
@@ -97,9 +111,9 @@ export const Home = () => {
 
         <FlatList
           data={items}
-          renderItem={({item}) => <OrderItem item={item} navigation={navigation} />}
+          renderItem={({ item }) => <OrderItem item={item} navigation={navigation} />}
           keyExtractor={item => item.id}
-          style={{height: 650}}
+          style={{ height: 650 }}
         />
       </LinearGradient>
     </SafeAreaView>
