@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.207:5000';
+const host = '172.16.183.142:5000';
 // *********************************************************
 
 export const Login = () => {

@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
 
 export const Rides = () => {
   const [name, setName] = useState('');

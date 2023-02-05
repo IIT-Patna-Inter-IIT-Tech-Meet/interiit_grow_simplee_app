@@ -10,6 +10,7 @@ import {Button} from 'react-native-paper';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
+import { useRoute } from '@react-navigation/native';
 const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
 
 const styles = StyleSheet.create({
@@ -217,10 +218,13 @@ const mapStyle = [
     }
   ]
 
-export const VerifyDelivery = ({route}) => {
-    const [currentLocation, setCurrentLocation] = useState(null);
+export const VerifyDelivery = () => {
+    const [currentLocation, setCurrentLocation] = useState({});
+    const route = useRoute();
+    const {item} = route.params;
+
+    console.log("line no 224: ",item)
     useEffect(() => {
-      console.log(route.params)
         Geolocation.getCurrentPosition(
             position => {
                 setCurrentLocation({
@@ -254,7 +258,7 @@ export const VerifyDelivery = ({route}) => {
             <View className="flex items-center flex-row">
               <Image style={{width: 20, height: 20}} source={square} />
               <Text className="text-white text-lg font-semibold ml-5">
-                {route.params.data.location}
+                {item.location}
               </Text>
             </View>
           </View>
@@ -270,12 +274,11 @@ export const VerifyDelivery = ({route}) => {
                   longitudeDelta: 0.0421,
                 }}>
                 <Marker
-                  key={`delivery-${route.params.latitude}-${route.params.longitude}`}
+                  key={`delivery-${item.latitude}-${item.longitude}`}
                   coordinate={{
-                    latitude: route.params.data.latitude,
-                    longitude: route.params.data.longitude,
+                    latitude: item.latitude,
+                    longitude: item.longitude,
                   }}
-                  // onPress={() => handleOnPress(delivery)}
                   pinColor="red"
                 />
                 <Marker
@@ -284,7 +287,6 @@ export const VerifyDelivery = ({route}) => {
                     latitude: currentLocation.latitude,
                     longitude: currentLocation.longitude,
                   }}
-                  // onPress={() => handleOnPress(delivery)}
                   pinColor="green"
                 />
                 <MapViewDirections
@@ -292,7 +294,7 @@ export const VerifyDelivery = ({route}) => {
                     latitude: currentLocation.latitude,
                     longitude: currentLocation.longitude,
                   }}
-                  destination={route.params.data}
+                  destination={item}
                   optimizeWaypoints={true}
                   apikey={GOOGLE_MAPS_API_KEY}
                   mode="DRIVING"
@@ -314,10 +316,10 @@ export const VerifyDelivery = ({route}) => {
                     longitude: currentLocation.longitude,
                   },
                   {
-                    latitude: route.params.data.latitude,
-                    longitude: route.params.data.longitude,
+                    latitude: item.latitude,
+                    longitude: item.longitude,
                   },
-                ))} Km
+                ))} KM
               </Text>
             </View>
             <View className="flex justify-between flex-row">
@@ -325,14 +327,14 @@ export const VerifyDelivery = ({route}) => {
                 Amount to collect
               </Text>
               <Text className="text-white text-lg font-semibold">
-                Rs. {route.params.data.amount}
+                Rs. {item.amount}
               </Text>
             </View>
           </View> : null}
 
           <View className="flex items-center top-[50%]">
             <Button className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5">
-              <Text className="text-gray-900 text-lg">Confirm {route.params.data.delivery? 'Delivery' : 'Pickup'}</Text>
+              <Text className="text-gray-900 text-lg">Confirm {item.delivery? 'Delivery' : 'Pickup'}</Text>
             </Button>
           </View>
         </View>

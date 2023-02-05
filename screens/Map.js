@@ -292,7 +292,7 @@ export const Maps = () => {
     // setDelivery(delivery.filter((delivery) => delivery !== point));
     console.log(point)
     setPoints(points.filter(delivery => delivery !== point));
-    navigation.navigate('VerifyDelivery', {data: point});
+    navigation.navigate('VerifyDelivery', {item: point});
   };
   return (
     <View style={styles.container}>

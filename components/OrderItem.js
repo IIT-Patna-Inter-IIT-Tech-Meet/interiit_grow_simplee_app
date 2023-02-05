@@ -1,107 +1,94 @@
-import React from 'react';
-import {View, StyleSheet, Text, Pressable, Image} from 'react-native';
+/*eslint-disable*/
+import React, {useEffect, useState} from 'react';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import circle from '../assets/images/Ellipse.png';
 import square from '../assets/images/square.png';
 import line from '../assets/images/line.png';
+import {useNavigation} from '@react-navigation/native';
+import Geolocation from '@react-native-community/geolocation';
+import haversine from 'haversine';
 
-const OrderItem = ({item,navigation}) => {
+const OrderItem = ({item}) => {
+  const navigation = useNavigation();
+  const [currentLocation, setCurrentLocation] = useState({});
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        setCurrentLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      error => console.log(error),
+      {enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000},
+    );
+  }, []);
+  const deliverBy = item.timestamp.slice(0, -1).concat('+05:30');
+  const time = new Date(deliverBy).toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
   return (
-    <View style={styles.item}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginBottom: 10,
-        }}>
+    <View className="bg-[#CCCDCD4D] p-5 border rounded-2xl mt-2 mb-2 ml-4 mr-4">
+      <View className="flex-1 flex-row items-center mb-2">
         <View style={{flex: 3}}>
-          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-            <Image style={{width: 10, height: 10}} source={circle} />
-            <Text style={styles.location}>{item.warehouse}</Text>
+          <View className="flex-1 flex-row items-center">
+            <Image className="w-2.5 h-2.5" source={circle} />
+            <Text className="text-white text-xs ml-1">
+              Your Current Location
+            </Text>
           </View>
 
-          <Image source={line} width={2} height={18} style={{marginLeft: 4}} />
+          <Image source={line} className="ml-1 w-[2px] h-4" />
 
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <Image
-              style={{width: 10, height: 10, marginTop: 3}}
-              source={square}
-            />
-            <Text style={styles.location}>{item.location}</Text>
+          <View className="flex-1 flex-row">
+            <Image className="mt-1 w-3 h-3" source={square} />
+            <Text className="text-white text-xs ml-1">{item.location}</Text>
           </View>
         </View>
 
-        <Text style={styles.title}>{item.price} INR</Text>
+        <Text className="flex-2 font-bold text-right text-3xl text-[#fcfcfc]">
+          {item.amount} INR
+        </Text>
       </View>
 
-      <View style={styles.info}>
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={{color: '#ffffff', fontSize: 10}}>Total Distance</Text>
-          <Text style={{color: '#ffffff', fontSize: 24, fontWeight: 'bold'}}>
-            {item.distance}
+      <View className="flex-1 flex-row bg-black border rounded-lg m-3 p-3">
+        <View className="flex-1 items-center">
+          <Text className="text-xs text-white">Total Distance</Text>
+          <Text className="font-bold text-2xl text-white">
+            {Math.round(
+              haversine(
+                {
+                  latitude: currentLocation.latitude,
+                  longitude: currentLocation.longitude,
+                },
+                {
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                },
+              ),
+            )}{' '}
+            KM
           </Text>
         </View>
-        <Text style={{color: '#ffffff'}}>|</Text>
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={{color: '#ffffff', fontSize: 10}}>Deliver By</Text>
-          <Text style={{color: '#ffffff', fontSize: 24, fontWeight: 'bold'}}>
-            {item.DeliverBy}
-          </Text>
+        <Text className="text-white">|</Text>
+        <View className="flex-1 items-center">
+          <Text className="text-xs text-white">Deliver By</Text>
+          <Text className="font-bold text-2xl text-white">{time}</Text>
         </View>
       </View>
 
-      <Pressable style={styles.btn} onPress={() => navigation.navigate('VerifyDelivery')}>
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+      <TouchableOpacity
+        className="flex-1 items-center justify-center ml-4 mr-4 p-3"
+        onPress={() => navigation.navigate('VerifyDelivery', {item})}>
+        <View className="flex-1 items-center flex-row">
           <Text style={{color: '#3EEF85', fontSize: 13}}>Verify Delivery </Text>
-          <Text style={{color: '#3EEF85', fontSize: 20}}>{'>'}</Text>
+          <Text style={{color: '#3EEF85', fontSize: 20}}>{'->'}</Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#CCCDCD4D',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 15,
-  },
-  title: {
-    fontSize: 30,
-    color: '#fcfcfc',
-    fontWeight: 'bold',
-    textAlign: 'right',
-    flex: 2,
-  },
-  location: {
-    fontSize: 12,
-    color: '#ffffff',
-    marginLeft: 5,
-  },
-  price: {
-    fontSize: 16,
-    color: '#a1a4b2',
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  info: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#000000',
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
-  },
-  btn: {
-    padding: 10,
-    marginHorizontal: 16,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-});
-
 export default OrderItem;

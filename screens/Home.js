@@ -13,65 +13,57 @@ import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
 import OrderItem from '../components/OrderItem';
 import user from '../assets/images/user.png';
-import arrow from '../assets/images/arrw.png';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { AsyncStorage } from 'react-native';
-
+import AsyncStorage  from '@react-native-async-storage/async-storage';
 
 const items = [
   {
-    id: '1',
-    item: 'Milk',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '100',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
+    latitude: 28.5355,
+    longitude: 77.3910,
+    amount: 500,
+    location: 'Noida, UP',
+    delivery: true,
+    timestamp: "2021-07-20T12:59:00.000Z",
   },
   {
-    id: '2',
-    item: 'Bread',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '50',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
+    latitude: 26.1542,
+    longitude: 85.8918,
+    amount: 800,
+    location: 'Darbhanga, Bihar',
+    delivery: true,
+    timestamp: "2021-09-27T12:47:00.000Z",
   },
   {
-    id: '3',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
+    latitude: 26.7606,
+    longitude: 83.3732,
+    amount: 700,
+    location: 'Gorakhpur, UP',
+    delivery: true,
+    timestamp: "2022-06-23T12:40:00.000Z",
   },
   {
-    id: '4',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
+    latitude: 25.4723,
+    longitude: 85.7082,
+    amount: 580,
+    location: 'Barh, Bihar',
+    delivery: true,
+    timestamp: "2021-06-20T12:40:00.000Z",
   },
   {
-    id: '5',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
+    latitude: 19.0760,
+    longitude: 72.8777,
+    amount: 590,
+    location: 'Mumbai, Maharastra',
+    delivery: true,
+    timestamp: "2021-05-20T12:00:00.000Z",
   },
   {
-    id: '6',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
+    latitude: 22.5726,
+    longitude: 88.3639,
+    amount: 500,
+    location: 'Kolkata, West Bengal',
+    delivery: true,
+    timestamp: "2021-05-22T13:10:00.000Z",
   },
 ];
 
@@ -91,8 +83,6 @@ export const Home = () => {
     }
   }, [isFocused])
 
-
-
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
@@ -102,7 +92,7 @@ export const Home = () => {
           <View>
             <Image source={user} style={{ marginRight: 10 }} />
           </View>
-          <View style={{ flex: 1, flexDirection: 'column' }}>
+          <View style={{ flex: 1 }}>
             <Text style={{ color: '#ffffff', fontSize: 16 }}>Welcome, {rider_name}</Text>
           </View>
         </View>
@@ -138,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 10,
     padding: 5,
-    height: 150,
+    height: 110,
     marginTop: 30,
   },
 });
