@@ -101,11 +101,6 @@ export const Home = () => {
           </View>
           <View style={{ flex: 1, flexDirection: 'column' }}>
             <Text style={{ color: '#ffffff', fontSize: 16 }}>Welcome, {rider_name}</Text>
-            <Pressable onPress={() => { console.log("Pressed!") }}>
-              <Text style={{ color: '#ffffff', fontSize: 12 }}>
-                Overall trip performance <Image source={arrow} />
-              </Text>
-            </Pressable>
           </View>
         </View>
 

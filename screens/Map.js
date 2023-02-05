@@ -1,10 +1,11 @@
 /* eslint-disable */
 import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import MapView, {Marker, Polyline} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
 import MapViewDirections from 'react-native-maps-directions';
+import {useNavigation} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,14 +36,26 @@ const deliveries = [
   {
     latitude: 25.56254,
     longitude: 84.86152,
+    amount: 500,
+    location: 'Noida, UP',
+    delivery: true,
+    timestamp: null,
   },
   {
     latitude: 25.51247,
     longitude: 84.87626,
+    amount: 500,
+    location: 'Noida, UP',
+    delivery: true,
+    timestamp: null,
   },
   {
     latitude: 25.52354,
     longitude: 84.87875,
+    amount: 500,
+    location: 'Noida, UP',
+    delivery: true,
+    timestamp: null,
   },
 ];
 
@@ -50,179 +63,192 @@ const pickups = [
   {
     latitude: 25.56254,
     longitude: 84.84521,
+    amount: 500,
+    location: 'Patna pickup address',
+    delivery: false,
+    timestamp: null,
   },
   {
     latitude: 25.51247,
     longitude: 84.8621,
+    amount: 500,
+    location: 'Patna pickup address',
+    delivery: false,
+    timestamp: null,
   },
   {
     latitude: 25.52354,
     longitude: 84.87415,
+    amount: 500,
+    location: 'Patna pickup address',
+    delivery: false,
+    timestamp: null,
   },
 ];
 
 const mapStyle = [
   {
-    "elementType": "geometry",
-    "stylers": [
+    elementType: 'geometry',
+    stylers: [
       {
-        "color": "#242f3e"
-      }
-    ]
+        color: '#242f3e',
+      },
+    ],
   },
   {
-    "elementType": "labels.text.fill",
-    "stylers": [
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#746855"
-      }
-    ]
+        color: '#746855',
+      },
+    ],
   },
   {
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    elementType: 'labels.text.stroke',
+    stylers: [
       {
-        "color": "#242f3e"
-      }
-    ]
+        color: '#242f3e',
+      },
+    ],
   },
   {
-    "featureType": "administrative.locality",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: 'administrative.locality',
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#d59563"
-      }
-    ]
+        color: '#d59563',
+      },
+    ],
   },
   {
-    "featureType": "poi",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: 'poi',
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#d59563"
-      }
-    ]
+        color: '#d59563',
+      },
+    ],
   },
   {
-    "featureType": "poi.park",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: 'poi.park',
+    elementType: 'geometry',
+    stylers: [
       {
-        "color": "#263c3f"
-      }
-    ]
+        color: '#263c3f',
+      },
+    ],
   },
   {
-    "featureType": "poi.park",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: 'poi.park',
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#6b9a76"
-      }
-    ]
+        color: '#6b9a76',
+      },
+    ],
   },
   {
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: 'road',
+    elementType: 'geometry',
+    stylers: [
       {
-        "color": "#38414e"
-      }
-    ]
+        color: '#38414e',
+      },
+    ],
   },
   {
-    "featureType": "road",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: 'road',
+    elementType: 'geometry.stroke',
+    stylers: [
       {
-        "color": "#212a37"
-      }
-    ]
+        color: '#212a37',
+      },
+    ],
   },
   {
-    "featureType": "road",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: 'road',
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#9ca5b3"
-      }
-    ]
+        color: '#9ca5b3',
+      },
+    ],
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: 'road.highway',
+    elementType: 'geometry',
+    stylers: [
       {
-        "color": "#746855"
-      }
-    ]
+        color: '#746855',
+      },
+    ],
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: 'road.highway',
+    elementType: 'geometry.stroke',
+    stylers: [
       {
-        "color": "#1f2835"
-      }
-    ]
+        color: '#1f2835',
+      },
+    ],
   },
   {
-    "featureType": "road.highway",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: 'road.highway',
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#f3d19c"
-      }
-    ]
+        color: '#f3d19c',
+      },
+    ],
   },
   {
-    "featureType": "transit",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: 'transit',
+    elementType: 'geometry',
+    stylers: [
       {
-        "color": "#2f3948"
-      }
-    ]
+        color: '#2f3948',
+      },
+    ],
   },
   {
-    "featureType": "transit.station",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: 'transit.station',
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#d59563"
-      }
-    ]
+        color: '#d59563',
+      },
+    ],
   },
   {
-    "featureType": "water",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: 'water',
+    elementType: 'geometry',
+    stylers: [
       {
-        "color": "#17263c"
-      }
-    ]
+        color: '#17263c',
+      },
+    ],
   },
   {
-    "featureType": "water",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: 'water',
+    elementType: 'labels.text.fill',
+    stylers: [
       {
-        "color": "#515c6d"
-      }
-    ]
+        color: '#515c6d',
+      },
+    ],
   },
   {
-    "featureType": "water",
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    featureType: 'water',
+    elementType: 'labels.text.stroke',
+    stylers: [
       {
-        "color": "#17263c"
-      }
-    ]
-  }
-]
+        color: '#17263c',
+      },
+    ],
+  },
+];
 export const Maps = () => {
+  const navigation = useNavigation();
   const [currentLocation, setCurrentLocation] = useState(null);
   const [route, setRoute] = useState(null);
   const [nearest, setNearest] = useState(null);
@@ -261,12 +287,12 @@ export const Maps = () => {
     setRoute(route);
   };
 
-  const handleOnPress = point => {
+  const handleOnPress = (point) => {
     // remove delivery point after delivery
     // setDelivery(delivery.filter((delivery) => delivery !== point));
-    setPoints(points.filter((delivery) => delivery !== point));
-    console.log(delivery)
-    console.log(point);
+    console.log(point)
+    setPoints(points.filter(delivery => delivery !== point));
+    navigation.navigate('VerifyDelivery', {data: point});
   };
   return (
     <View style={styles.container}>
@@ -286,8 +312,8 @@ export const Maps = () => {
             <Marker
               key={`delivery-${delivery.latitude}-${delivery.longitude}`}
               coordinate={delivery}
+              pinColor={delivery.delivery? 'red' : 'teal'}
               onPress={() => handleOnPress(delivery)}
-              
             />
           ))}
           {/* {delivery.map(pickup => (
@@ -304,18 +330,18 @@ export const Maps = () => {
             strokeColor="#000"
           />
           {/* {console.log(currentLocation)} */}
-          <Marker coordinate={currentLocation} />
+          <Marker coordinate={currentLocation} pinColor='yellow'/>
           {/* <Marker coordinate={nearest} /> */}
           <MapViewDirections
             origin={currentLocation}
             destination={nearest}
             optimizeWaypoints={true}
             apikey={GOOGLE_MAPS_API_KEY}
-            mode = "DRIVING"
+            mode="DRIVING"
             strokeWidth={4}
             strokeColor="#39FF14"
             onReady={handleRouteReady}
-            onError={(error) => console.log(error)}
+            onError={error => console.log(error)}
           />
         </MapView>
       ) : null}

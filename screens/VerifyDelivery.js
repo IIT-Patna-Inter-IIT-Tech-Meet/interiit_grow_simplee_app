@@ -8,6 +8,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import {Button} from 'react-native-paper';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import haversine from 'haversine';
 const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
 
 const styles = StyleSheet.create({
@@ -215,10 +216,10 @@ const mapStyle = [
     }
   ]
 
-export const VerifyDelivery = () => {
+export const VerifyDelivery = ({route}) => {
     const [currentLocation, setCurrentLocation] = useState(null);
-    const [route, setRoute] = useState(null);
     useEffect(() => {
+      console.log(route.params)
         Geolocation.getCurrentPosition(
             position => {
                 setCurrentLocation({
@@ -231,88 +232,109 @@ export const VerifyDelivery = () => {
         );
     }, []);
 
-    const handleRouteReady = route => {
-        setRoute(route);
-    };
-
     return (
-        <SafeAreaView className="flex-1 bg-[#181920]">
-            <View className="flex mt-8 h-full">
-                <View className="flex ml-6 align-middle ">
-                    <View className="flex items-center flex-row">
-                        <Image style={{ width: 20, height: 20 }} source={circle} />
-                        <Text className="text-white text-lg font-semibold ml-5">{item.warehouse}</Text>
-                    </View>
-
-                    <Image source={line} width={2} height={18} style={{ marginLeft: 8}} />
-
-                    <View className="flex items-center flex-row">
-                        <Image
-                            style={{ width: 20, height: 20 }}
-                            source={square}
-                        />
-                        <Text className="text-white text-lg font-semibold ml-5">{item.location}</Text>
-                    </View>
-                </View>
-                {currentLocation ? (
-                    <View style={styles.container}>
-                        <MapView
-                            style={styles.map}
-                            customMapStyle={mapStyle}
-                            initialRegion={{
-                                latitude: currentLocation.latitude,
-                                longitude: currentLocation.longitude,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421,
-                            }}>
-                            <Marker
-                                key={`delivery-${item.warehouse_coordinates.latitude}-${item.warehouse_coordinates.longitude}`}
-                                coordinate={item.warehouse_coordinates}
-                                // onPress={() => handleOnPress(delivery)}
-                                pinColor="red"
-
-                            />
-                            <Marker
-                                key={`delivery-${item.location_coordinates.latitude}-${item.location_coordinates.longitude}`}
-                                coordinate={item.location_coordinates}
-                                // onPress={() => handleOnPress(delivery)}
-                                pinColor="green"
-
-                            />
-                            <MapViewDirections
-                                origin={item.warehouse_coordinates}
-                                destination={item.location_coordinates}
-                                optimizeWaypoints={true}
-                                apikey={GOOGLE_MAPS_API_KEY}
-                                mode="DRIVING"
-                                strokeWidth={4}
-                                strokeColor="#39FF14"
-                                onReady={handleRouteReady}
-                                onError={(error) => console.log(error)}
-                            />
-                        </MapView>
-                    </View>) : null}
-
-                <View className="flex flex-col top-[50%] ml-8 mr-8">
-                    <View className="flex justify-between flex-row">
-                        <Text className="text-white text-lg font-semibold">Distance</Text>
-                        <Text className="text-white text-lg font-semibold">3Km</Text>
-                    </View>
-                    <View className="flex justify-between flex-row">
-                        <Text className="text-white text-lg font-semibold">Amount to collect</Text>
-                        <Text className="text-white text-lg font-semibold">Rs. 500</Text>
-                    </View>
-
-                </View>
-
-                <View className="flex items-center top-[50%]">
-                    <Button
-                        className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5">
-                        <Text className="text-gray-900 text-lg">Confirm Delivery</Text>
-                    </Button>
-                </View>
-
+      <SafeAreaView className="flex-1 bg-[#181920]">
+        <View className="flex mt-8 h-full">
+          <View className="flex ml-6 align-middle ">
+            <View className="flex items-center flex-row">
+              <Image style={{width: 20, height: 20}} source={circle} />
+              <Text className="text-white text-lg font-semibold ml-5">
+                Your Current Location
+              </Text>
             </View>
-        </SafeAreaView>
-    )
+
+            <Image
+              source={line}
+              width={2}
+              height={18}
+              style={{marginLeft: 8}}
+            />
+
+            <View className="flex items-center flex-row">
+              <Image style={{width: 20, height: 20}} source={square} />
+              <Text className="text-white text-lg font-semibold ml-5">
+                {route.params.data.location}
+              </Text>
+            </View>
+          </View>
+          {currentLocation ? (
+            <View style={styles.container}>
+              <MapView
+                style={styles.map}
+                customMapStyle={mapStyle}
+                initialRegion={{
+                  latitude: currentLocation.latitude,
+                  longitude: currentLocation.longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}>
+                <Marker
+                  key={`delivery-${route.params.latitude}-${route.params.longitude}`}
+                  coordinate={{
+                    latitude: route.params.data.latitude,
+                    longitude: route.params.data.longitude,
+                  }}
+                  // onPress={() => handleOnPress(delivery)}
+                  pinColor="red"
+                />
+                <Marker
+                  key={`delivery-${currentLocation.latitude}-${currentLocation.longitude}`}
+                  coordinate={{
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  }}
+                  // onPress={() => handleOnPress(delivery)}
+                  pinColor="green"
+                />
+                <MapViewDirections
+                  origin={{
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  }}
+                  destination={route.params.data}
+                  optimizeWaypoints={true}
+                  apikey={GOOGLE_MAPS_API_KEY}
+                  mode="DRIVING"
+                  strokeWidth={4}
+                  strokeColor="#39FF14"
+                  onError={error => console.log(error)}
+                />
+              </MapView>
+            </View>
+          ) : null}
+
+          {currentLocation? <View className="flex flex-col top-[50%] ml-8 mr-8">
+            <View className="flex justify-between flex-row">
+              <Text className="text-white text-lg font-semibold">Distance</Text>
+              <Text className="text-white text-lg font-semibold">
+                {Math.round(haversine(
+                  {
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                  },
+                  {
+                    latitude: route.params.data.latitude,
+                    longitude: route.params.data.longitude,
+                  },
+                ))} Km
+              </Text>
+            </View>
+            <View className="flex justify-between flex-row">
+              <Text className="text-white text-lg font-semibold">
+                Amount to collect
+              </Text>
+              <Text className="text-white text-lg font-semibold">
+                Rs. {route.params.data.amount}
+              </Text>
+            </View>
+          </View> : null}
+
+          <View className="flex items-center top-[50%]">
+            <Button className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5">
+              <Text className="text-gray-900 text-lg">Confirm {route.params.data.delivery? 'Delivery' : 'Pickup'}</Text>
+            </Button>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
 }

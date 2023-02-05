@@ -10,7 +10,7 @@ import { AsyncStorage } from 'react-native';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = "192.168.0.108:5000";
+const host = '192.168.137.95:5000';
 // *********************************************************
 
 export const Profile = () => {
@@ -25,7 +25,7 @@ export const Profile = () => {
       const rider_data = JSON.parse(rider_info);
       setName(rider_data.rider.name);
       setEmail(rider_data.rider.email);
-      setUserId(rider_data.rider.id.slice(-11));
+      // setUserId(rider_data.rider.id.slice(-11));
     }
     getRiderDetails();
   }, [])
