@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,68 +11,78 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
-import OrderItem from '../components/OrderItem';
+import RecentItem from '../components/RecentItem';
 import user from '../assets/images/user.png';
 import arrow from '../assets/images/arrw.png';
 
-const items = [
-  {
-    id: '1',
-    item: 'Milk',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '100',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
-  },
-  {
-    id: '2',
-    item: 'Bread',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '50',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
-  },
-  {
-    id: '3',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
-  },
-  {
-    id: '4',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
-  },
-  {
-    id: '5',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
-  },
-  {
-    id: '6',
-    item: 'Eggs',
-    location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-    warehouse: 'Patna Goods inventory',
-    price: '200',
-    DeliverBy: '12:00 PM',
-    distance: '110 Km',
-  },
-];
+// *********************************************************
+// IMPORTANT: Change this to your local IP address
+const host = '192.168.137.207:5000';
+// *********************************************************
+
 
 const RecentDelivery = () => {
+  const [id, setId] = useState('');
+  const [name, setName] = useState('John Doe');
+  const [address, setAddress] = useState('Patna deliveries location');
+  const [time, setTime] = useState('10:20 AM');
+  const [awb, setAwb] = useState('A123456789');
+  const [recentdata, setRecentdata] = useState([]);
+
+  useEffect(() => {
+    const handleLogin = async () => {
+      let body = { "start": "2023-02-05T11:23:32.497Z" };
+      // console.log(body);
+      try {
+        const response = await fetch(`http://${host}/rider/past-deliveries`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        });
+        // Flushing the old cookies to prevent any issues
+        
+  
+        const data = await response.json();
+        console.log(data);
+        // dummydata = [
+        //   {
+        //     id:"4521",
+        //     AWB:"A123456789",
+        //     deliveryTimestamp:"12:00 PM",
+        //     customer:{
+        //       address:"Patna deliveries location",
+        //       name:"John Doe"
+        //     }
+        //   }
+        // ]
+        setRecentdata(data);
+  
+        if (response.status === 200) {
+          
+        }
+        else if (response.status === 401) {
+          console.log("Unauthorized Access");
+          console.log(data);
+        }
+        else if (response.status === 401) {
+          console.log("Malformed Request");
+          console.log(data);
+        }
+  
+        else {
+          console.log("Login failed");
+          console.log(data);
+        }
+      }
+      catch (err) {
+        console.log(err);
+      }
+    };
+    handleLogin();
+  },[])
+  
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
@@ -82,8 +92,10 @@ const RecentDelivery = () => {
           <Text style={styles.headerText}>Recent Orders</Text>
         </View>
         <FlatList
-          data={items}
-          renderItem={({ item }) => <OrderItem item={item} />}
+          data={recentdata}
+          renderItem={({ item }) => <RecentItem item={item} />}
+          // data={recentdata}
+          // renderItem={({ recentdata }) => <OrderItem item={recentdata} />}
           keyExtractor={item => item.id}
           style={{ height: 650 }}
         />
