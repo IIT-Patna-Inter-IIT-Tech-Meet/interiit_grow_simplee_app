@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.95:5000';
+const host = '192.168.137.207:5000';
 // *********************************************************
 
 export const Login = () => {
@@ -51,7 +51,7 @@ export const Login = () => {
             // console.log('CookieManager.setFromResponse =>', res);
           });
         console.log(data);
-        await AsyncStorage.setItem("rider_data",JSON.stringify(data));
+        await AsyncStorage.setItem("rider_data",JSON.stringify(data.rider));
         // await AsyncStorage.setItem("rider_email",data.rider.email);
         // await AsyncStorage.setItem("rider_phone",data.rider.phoneno);
         // await AsyncStorage.setItem("rider_id",data.rider._id);

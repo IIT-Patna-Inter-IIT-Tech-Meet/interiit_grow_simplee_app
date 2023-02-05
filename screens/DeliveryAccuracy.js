@@ -1,12 +1,23 @@
-import { React, useState } from 'react';
+/*eslint-disable*/
+import { React, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const DeliveryAccuracy = () => {
-    const [name, setName] = useState('John Doe');
+    const [name, setName] = useState('');
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        const getRiderDetails = async () => {
+          const rider_info = await AsyncStorage.getItem('rider_data');
+          const rider_data = JSON.parse(rider_info);
+          setName(rider_data.name);
+        };
+        if (isFocused) getRiderDetails();
+      }, [isFocused]);
     return (
         <SafeAreaView className="flex-1 bg-[#181920]">
             <LinearGradient

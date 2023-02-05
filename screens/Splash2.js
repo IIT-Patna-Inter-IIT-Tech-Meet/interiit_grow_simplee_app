@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import CookieManager from '@react-native-cookies/cookies';
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.95:5000';
+const host = '192.168.137.207:5000';
 // *********************************************************
 const Splash2 = () => {
   const navigation = useNavigation();

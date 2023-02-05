@@ -14,7 +14,7 @@ import bg from '../assets/images/bg.png';
 import OrderItem from '../components/OrderItem';
 import user from '../assets/images/user.png';
 import arrow from '../assets/images/arrw.png';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { AsyncStorage } from 'react-native';
 
 
@@ -77,16 +77,19 @@ const items = [
 
 export const Home = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [rider_name, setRiderName] = React.useState('Rider');
 
   useEffect(() => {
     const getRiderName = async () => {
       const rider_info = await AsyncStorage.getItem('rider_data');
       const rider_data = JSON.parse(rider_info);
-      setRiderName(rider_data.rider.name);
+      setRiderName(rider_data.name);
     }
-    getRiderName();
-  }, [])
+    if(isFocused){
+      getRiderName();
+    }
+  }, [isFocused])
 
 
 

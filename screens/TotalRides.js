@@ -1,12 +1,24 @@
-import { React, useState } from 'react';
+/* eslint-disable */
+import { React, useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const TotalRides = () => {
-    const [name, setName] = useState('John Doe');
+    const [name, setName] = useState('');
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        const getRiderDetails = async () => {
+          const rider_info = await AsyncStorage.getItem('rider_data');
+          const rider_data = JSON.parse(rider_info);
+          setName(rider_data.name);
+        };
+        if (isFocused) getRiderDetails();
+      }, [isFocused]);
+    
     return (
         <SafeAreaView className="flex-1 bg-[#181920]">
             <LinearGradient
@@ -23,15 +35,6 @@ export const TotalRides = () => {
                         </View>
                     </View>
                     <View className="flex-1 m-auto mt-11">
-                        {/* <TouchableOpacity className="flex-1 items-center flex-row justify-evenly bg-[#121417] h-32 w-11/12 rounded-xl my-5 ">
-              <View className="rounded-full bg-[#387ee847] h-24 w-24 items-center justify-center">
-                <Icon name="dollar-sign" size={40} color="#387EE8"></Icon>
-              </View>
-              <View>
-                <Text className="text-white text-2xl font-semibold">INR 22,000.00</Text>
-                <Text className="text-gray-300">Total Earned</Text>
-              </View>
-            </TouchableOpacity> */}
                         <TouchableOpacity className="flex-1 items-center flex-row justify-evenly bg-[#121417] h-32 w-11/12 rounded-xl my-5 ">
                             <View className="rounded-full bg-[#387ee847] h-24 w-24 items-center justify-center">
                                 <Icon name="map" size={40} color="#387EE8"></Icon>

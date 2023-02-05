@@ -1,34 +1,33 @@
 /* eslint-disable */
-import React, { useState,useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import CookieManager from '@react-native-cookies/cookies';
-import { AsyncStorage } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.95:5000';
+const host = '192.168.137.207:5000';
 // *********************************************************
 
 export const Profile = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState('John Doe');
-  const [email, setEmail] = useState('johndoe@example.com');
-  const [UserId, setUserId] = useState('12345');
+  const isFocused = useIsFocused();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [UserId, setUserId] = useState('');
 
   useEffect(() => {
     const getRiderDetails = async () => {
       const rider_info = await AsyncStorage.getItem('rider_data');
       const rider_data = JSON.parse(rider_info);
-      setName(rider_data.rider.name);
-      setEmail(rider_data.rider.email);
-      // setUserId(rider_data.rider.id.slice(-11));
-    }
-    getRiderDetails();
-  }, [])
+      setName(rider_data.name);
+      setEmail(rider_data.email);
+    };
+    if (isFocused) getRiderDetails();
+  }, [isFocused]);
 
   const handleLogout = async () => {
     try {
@@ -38,19 +37,17 @@ export const Profile = () => {
           'Content-Type': 'application/json',
         },
       });
-      
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data)
-        await CookieManager.clearAll()
-          .then((success) => {
-            // console.log('CookieManager.clearAll =>', success);
-          });
+        console.log(data);
+        await CookieManager.clearAll();
+        AsyncStorage.removeItem('rider_data');
         navigation.navigate('Login');
+      } else {
+        throw new Error('Something went wrong');
       }
-    }
-    catch (err) {
-      console.log(err);
+    } catch (err) {
+      console.log(err.message);
     }
   };
 
@@ -65,8 +62,6 @@ export const Profile = () => {
           <View className="gap-1">
             <Text className="text-white text-2xl font-bold">{name}</Text>
             <Text className="text-white text-l ">{email}</Text>
-            <Text className="text-white text-l ">User Id: {UserId}</Text>
-            {/* <TouchableOpacity className="flex-1 align-middle"> */}
             <TouchableOpacity
               className="flex-1 align-middle items-center flex-row"
               onPress={() => navigation.navigate('EditProfile')}>
