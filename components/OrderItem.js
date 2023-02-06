@@ -24,15 +24,15 @@ const OrderItem = ({item}) => {
       {enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000},
     );
   }, []);
-  const deliverBy = item.timestamp.slice(0, -1).concat('+05:30');
+  const deliverBy = item.EDD.slice(0, -1).concat('+05:30');
   const time = new Date(deliverBy).toLocaleString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
   });
   const destination = {
-    latitude: item.latitude,
-    longitude: item.longitude,
+    latitude: item.customer.latitude,
+    longitude: item.customer.longitude,
   };
   return (
     <View className="bg-[#CCCDCD4D] p-5 border rounded-2xl mt-2 mb-2 ml-4 mr-4">
@@ -49,12 +49,12 @@ const OrderItem = ({item}) => {
 
           <View className="flex-1 flex-row">
             <Image className="mt-1 w-3 h-3" source={square} />
-            <Text className="text-white text-xs ml-1">{item.location}</Text>
+            <Text className="text-white text-xs ml-1">{item.customer.address}</Text>
           </View>
         </View>
 
         <Text className="flex-2 font-bold text-right text-3xl text-[#fcfcfc]">
-          {item.amount} INR
+          Paid
         </Text>
       </View>
 
@@ -76,11 +76,10 @@ const OrderItem = ({item}) => {
         className="flex-1 items-center justify-center ml-4 mr-4 p-3"
         onPress={() =>
           navigation.navigate('VerifyDelivery', {
-            amount:item.amount,
             currentLocation:currentLocation,
             destination:destination,
             delivery:item.delivery,
-            location:item.location
+            location:item.customer.address
           })
         }>
         <View className="flex-1 items-center flex-row">

@@ -2,10 +2,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import CookieManager from '@react-native-cookies/cookies';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
 import {
   ScrollView,
-  StyleSheet,
   Text,
   View,
   Image,
@@ -17,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '172.16.183.142:5000';
+const host = '192.168.137.207:5000';
 // *********************************************************
 
 export const Login = () => {

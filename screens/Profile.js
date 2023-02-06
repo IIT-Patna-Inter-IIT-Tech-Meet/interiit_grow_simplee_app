@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '172.16.180.11:5000';
+const host = '192.168.137.207:5000';
 // *********************************************************
 
 export const Profile = () => {

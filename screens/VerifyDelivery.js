@@ -289,10 +289,10 @@ export const VerifyDelivery = () => {
             </View>
             <View className="flex justify-between flex-row">
               <Text className="text-white text-lg font-semibold">
-                Amount to collect
+                Status
               </Text>
               <Text className="text-white text-lg font-semibold">
-                Rs. {amount}
+                Paid
               </Text>
             </View>
           </View>

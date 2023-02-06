@@ -7,7 +7,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
 import OrderItem from '../components/OrderItem';
@@ -15,69 +15,56 @@ import user from '../assets/images/user.png';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 
-const items = [
-  {
-    latitude: 28.5355,
-    longitude: 77.3910,
-    amount: 500,
-    location: 'Noida, UP',
-    delivery: true,
-    timestamp: "2021-07-20T12:59:00.000Z",
-  },
-  {
-    latitude: 26.1542,
-    longitude: 85.8918,
-    amount: 800,
-    location: 'Darbhanga, Bihar',
-    delivery: true,
-    timestamp: "2021-09-27T12:47:00.000Z",
-  },
-  {
-    latitude: 26.7606,
-    longitude: 83.3732,
-    amount: 700,
-    location: 'Gorakhpur, UP',
-    delivery: true,
-    timestamp: "2022-06-23T12:40:00.000Z",
-  },
-  {
-    latitude: 25.4723,
-    longitude: 85.7082,
-    amount: 580,
-    location: 'Barh, Bihar',
-    delivery: true,
-    timestamp: "2021-06-20T12:40:00.000Z",
-  },
-  {
-    latitude: 19.0760,
-    longitude: 72.8777,
-    amount: 590,
-    location: 'Mumbai, Maharastra',
-    delivery: true,
-    timestamp: "2021-05-20T12:00:00.000Z",
-  },
-  {
-    latitude: 22.5726,
-    longitude: 88.3639,
-    amount: 500,
-    location: 'Kolkata, West Bengal',
-    delivery: true,
-    timestamp: "2021-05-22T13:10:00.000Z",
-  },
-];
-
+const host = '192.168.137.207:5000';
 export const Home = () => {
   const isFocused = useIsFocused();
-  const [rider_name, setRiderName] = React.useState('Rider');
-
+  const [rider_name, setRiderName] = useState('Rider');
+  const [deliveryPackages, setDeliveryPackages] = useState([
+    {
+      "id":"85",
+      "AWB":"123!@#",
+      "EDD":"2021-05-22T13:10:00.000Z",
+      "deliveryTimestamp":"",
+      "customer":{
+        "address":"Noida, UP",
+        "name":"Aditya Kumar",
+        "latitude":25.4723,
+        "longitude":85.7082,
+      },
+      "delivery":true
+    },
+    {
+      "id":"13",
+      "AWB":"123r@#",
+      "EDD":"2021-05-23T13:50:00.000Z",
+      "deliveryTimestamp":"",
+      "customer":{
+        "address":"Barh, Bihar",
+        "name":"Anurag Deo",
+        "latitude":25.4823,
+        "longitude":85.8082,
+      },
+      "delivery":true
+    }
+  ]);
   useEffect(() => {
     const getRiderName = async () => {
       const rider_info = await AsyncStorage.getItem('rider_data');
       const rider_data = JSON.parse(rider_info);
       setRiderName(rider_data.name);
     }
+    const fetchDeliveryDetails = async () => {
+      const response = await fetch(`http://${host}/package/route-packages`,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+    }
     if(isFocused){
       getRiderName();
+      fetchDeliveryDetails();
     }
   }, [isFocused])
 
@@ -96,7 +83,7 @@ export const Home = () => {
         </View>
 
         <FlatList
-          data={items}
+          data={deliveryPackages}
           renderItem={({ item }) => <OrderItem item={item} />}
           keyExtractor={item => item.id}
           style={{ height: 650 }}
