@@ -344,12 +344,13 @@ export const Maps = () => {
         },
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
     };
     if (isFocused) {
       fetchDeliveryDetails();
     }
   }, [isFocused]);
+
   useEffect(() => {
     Geolocation.getCurrentPosition(
       position => {
@@ -364,24 +365,25 @@ export const Maps = () => {
   }, []);
 
   useEffect(() => {
-    // if (!currentLocation) return;
-    console.log(currentLocation);
+    if(!currentLocation) return;
+    
+    console.log({currentLocation});
     let nearestPoint = {
       latitude: points[0].customer.latitude,
       longitude: points[0].customer.longitude,
     };
     points.forEach(point => {
-      log(point);
+      // console.log(point);
       const deliverPos = {
         latitude: point.customer.latitude,
         longitude: point.customer.longitude,
       };
-      if (
-        haversine(currentLocation, deliverPos) <
-        haversine(currentLocation, nearestPoint)
-      ) {
-        nearestPoint = deliverPos;
-      }
+      // if (
+      //   haversine(currentLocation, deliverPos) <
+      //   haversine(currentLocation, nearestPoint)
+      // ) {
+      //   nearestPoint = deliverPos;
+      // }
     });
     setNearest(nearestPoint);
   }, [currentLocation, deliveries, pickups, points]);
