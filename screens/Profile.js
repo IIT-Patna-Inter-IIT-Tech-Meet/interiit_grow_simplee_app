@@ -8,11 +8,6 @@ import CookieManager from '@react-native-cookies/cookies';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {HOST} from './host';
 
-// *********************************************************
-// IMPORTANT: Change this to your local IP address
-// const host = '192.168.137.207:5000';
-// *********************************************************
-
 export const Profile = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();

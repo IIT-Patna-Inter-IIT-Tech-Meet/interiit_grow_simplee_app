@@ -406,6 +406,7 @@ export const Maps = () => {
       destination: destination,
       delivery: point.delivery,
       location: point.customer.address,
+      id:point.id
     });
   };
   return (
