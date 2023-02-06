@@ -14,10 +14,11 @@ import bg from '../assets/images/bg.png';
 import RecentItem from '../components/RecentItem';
 import user from '../assets/images/user.png';
 import arrow from '../assets/images/arrw.png';
+import {HOST} from './host';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.207:5000';
+// const host = '192.168.137.207:5000';
 // *********************************************************
 
 
@@ -34,7 +35,7 @@ const RecentDelivery = () => {
       let body = { "start": "2023-02-05T11:23:32.497Z" };
       // console.log(body);
       try {
-        const response = await fetch(`http://${host}/rider/past-deliveries`, {
+        const response = await fetch(`http://${HOST}/rider/past-deliveries`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

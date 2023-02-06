@@ -13,10 +13,11 @@ import {
 import { Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {HOST} from './host';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.207:5000';
+// const host = '192.168.137.207:5000';
 // *********************************************************
 
 export const ForgotPass = () => {
@@ -31,7 +32,7 @@ export const ForgotPass = () => {
     let body = { "email": email };
     // console.log(body);
     try {
-      const response = await fetch(`http://${host}/rider/forgot-password`, {
+      const response = await fetch(`http://${HOST}/rider/forgot-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +46,7 @@ export const ForgotPass = () => {
       if (response.status === 200) {
         setEmailsent(true);
         console.log(data);
-        // CookieManager.get(`http://${host}/rider/login`)
+        // CookieManager.get(`http://${HOST}/rider/login`)
         //   .then((cookies) => {
         //     console.log('CookieManager.get =>', cookies);
         //   });
@@ -72,7 +73,7 @@ export const ForgotPass = () => {
   const handleSubmitOTP = async() => {
     let body = { "email": email, "otp": otp, "password":password };
         try {
-            const response = await fetch(`http://${host}/rider/reset-password`, {
+            const response = await fetch(`http://${HOST}/rider/reset-password`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

@@ -13,10 +13,11 @@ import {
 import { Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {HOST} from './host';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.207:5000';
+// const host = '192.168.137.207:5000';
 // *********************************************************
 
 export const Login = () => {
@@ -28,7 +29,7 @@ export const Login = () => {
     let body = { "email": email, "password": password };
     // console.log(body);
     try {
-      const response = await fetch(`http://${host}/rider/login`, {
+      const response = await fetch(`http://${HOST}/rider/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export const Login = () => {
       const data = await response.json();
 
       if (response.status === 200) {
-        await CookieManager.setFromResponse(`http://${host}/rider/login`, response.headers.get('set-cookie'))
+        await CookieManager.setFromResponse(`http://${HOST}/rider/login`, response.headers.get('set-cookie'))
           .then((res) => {
             // `res` will be true or false depending on success.
             // console.log('CookieManager.setFromResponse =>', res);
@@ -61,7 +62,7 @@ export const Login = () => {
 
         // const value = await AsyncStorage.getItem('rider_data');
         // console.log(value);
-        // CookieManager.get(`http://${host}/rider/login`)
+        // CookieManager.get(`http://${HOST}/rider/login`)
         //   .then((cookies) => {
         //     console.log('CookieManager.get =>', cookies);
         //   });

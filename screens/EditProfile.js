@@ -5,9 +5,8 @@ import {TextInput, Button} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import tw from 'tailwind-react-native-classnames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
-
-const HOST = '192.168.137.207:5000';
+import {useIsFocused} from '@react-navigation/native';
+import {HOST} from './host';
 
 export const EditProfile = () => {
   const isFocused = useIsFocused();

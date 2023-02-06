@@ -4,16 +4,17 @@ import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import CookieManager from '@react-native-cookies/cookies';
+import {HOST} from './host';
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.207:5000';
+// const host = '192.168.137.207:5000';
 // *********************************************************
 const Splash2 = () => {
   const navigation = useNavigation();
 
   const handleLoginNavigation = () => {
   
-      CookieManager.get(`http://${host}/rider/login`)
+      CookieManager.get(`http://${HOST}/rider/login`)
         .then((cookies) => {
           // console.log('CookieManager.get =>', cookies);
           // console.log(JSON.stringify(cookies))

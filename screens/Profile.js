@@ -6,10 +6,11 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import CookieManager from '@react-native-cookies/cookies';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {HOST} from './host';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
-const host = '192.168.137.207:5000';
+// const host = '192.168.137.207:5000';
 // *********************************************************
 
 export const Profile = () => {
@@ -31,7 +32,7 @@ export const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`http://${host}/rider/logout`, {
+      const response = await fetch(`http://${HOST}/rider/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -14,8 +14,9 @@ import OrderItem from '../components/OrderItem';
 import user from '../assets/images/user.png';
 import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
+import {HOST} from './host';
 
-const host = '192.168.137.207:5000';
+// const host = '192.168.137.207:5000';
 export const Home = () => {
   const isFocused = useIsFocused();
   const [rider_name, setRiderName] = useState('Rider');
@@ -54,7 +55,7 @@ export const Home = () => {
       setRiderName(rider_data.name);
     }
     const fetchDeliveryDetails = async () => {
-      const response = await fetch(`http://${host}/package/route-packages`,{
+      const response = await fetch(`http://${HOST}/package/route-packages`,{
         headers: {
           'Content-Type': 'application/json',
         },
