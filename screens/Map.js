@@ -5,7 +5,7 @@ import MapView, {Marker, Polyline} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
 import MapViewDirections from 'react-native-maps-directions';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,28 +34,52 @@ const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
 
 const deliveries = [
   {
-    latitude: 25.56254,
-    longitude: 84.86152,
+    latitude: 28.5355,
+    longitude: 77.3910,
     amount: 500,
     location: 'Noida, UP',
     delivery: true,
-    timestamp: null,
+    timestamp: "2021-07-20T12:59:00.000Z",
   },
   {
-    latitude: 25.51247,
-    longitude: 84.87626,
-    amount: 500,
-    location: 'Noida, UP',
+    latitude: 26.1542,
+    longitude: 85.8918,
+    amount: 800,
+    location: 'Darbhanga, Bihar',
     delivery: true,
-    timestamp: null,
+    timestamp: "2021-09-27T12:47:00.000Z",
   },
   {
-    latitude: 25.52354,
-    longitude: 84.87875,
-    amount: 500,
-    location: 'Noida, UP',
+    latitude: 26.7606,
+    longitude: 83.3732,
+    amount: 700,
+    location: 'Gorakhpur, UP',
     delivery: true,
-    timestamp: null,
+    timestamp: "2022-06-23T12:40:00.000Z",
+  },
+  {
+    latitude: 25.4723,
+    longitude: 85.7082,
+    amount: 580,
+    location: 'Barh, Bihar',
+    delivery: true,
+    timestamp: "2021-06-20T12:40:00.000Z",
+  },
+  {
+    latitude: 19.0760,
+    longitude: 72.8777,
+    amount: 590,
+    location: 'Mumbai, Maharastra',
+    delivery: true,
+    timestamp: "2021-05-20T12:00:00.000Z",
+  },
+  {
+    latitude: 22.5726,
+    longitude: 88.3639,
+    amount: 500,
+    location: 'Kolkata, West Bengal',
+    delivery: true,
+    timestamp: "2021-05-22T13:10:00.000Z",
   },
 ];
 
@@ -66,7 +90,7 @@ const pickups = [
     amount: 500,
     location: 'Patna pickup address',
     delivery: false,
-    timestamp: null,
+    timestamp: '2021-07-20T12:59:00.000Z',
   },
   {
     latitude: 25.51247,
@@ -74,7 +98,7 @@ const pickups = [
     amount: 500,
     location: 'Patna pickup address',
     delivery: false,
-    timestamp: null,
+    timestamp: '2021-07-20T12:59:00.000Z',
   },
   {
     latitude: 25.52354,
@@ -82,7 +106,7 @@ const pickups = [
     amount: 500,
     location: 'Patna pickup address',
     delivery: false,
-    timestamp: null,
+    timestamp: '2021-07-20T12:59:00.000Z',
   },
 ];
 
@@ -287,12 +311,22 @@ export const Maps = () => {
     setRoute(route);
   };
 
-  const handleOnPress = (point) => {
+  const handleOnPress = point => {
     // remove delivery point after delivery
     // setDelivery(delivery.filter((delivery) => delivery !== point));
-    console.log(point)
+    console.log(point);
+    const destination = {
+      latitude: point.latitude,
+      longitude: point.longitude,
+    };
     setPoints(points.filter(delivery => delivery !== point));
-    navigation.navigate('VerifyDelivery', {item: point});
+    navigation.navigate('VerifyDelivery', {
+      amount: point.amount,
+      currentLocation: currentLocation,
+      destination: destination,
+      delivery: point.delivery,
+      location: point.location,
+    });
   };
   return (
     <View style={styles.container}>
@@ -312,7 +346,7 @@ export const Maps = () => {
             <Marker
               key={`delivery-${delivery.latitude}-${delivery.longitude}`}
               coordinate={delivery}
-              pinColor={delivery.delivery? 'red' : 'teal'}
+              pinColor={delivery.delivery ? 'red' : 'teal'}
               onPress={() => handleOnPress(delivery)}
             />
           ))}
@@ -330,7 +364,7 @@ export const Maps = () => {
             strokeColor="#000"
           />
           {/* {console.log(currentLocation)} */}
-          <Marker coordinate={currentLocation} pinColor='yellow'/>
+          <Marker coordinate={currentLocation} pinColor="yellow" />
           {/* <Marker coordinate={nearest} /> */}
           <MapViewDirections
             origin={currentLocation}

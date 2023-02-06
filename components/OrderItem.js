@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import React, {useEffect, useState} from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import circle from '../assets/images/Ellipse.png';
 import square from '../assets/images/square.png';
 import line from '../assets/images/line.png';
@@ -30,6 +30,10 @@ const OrderItem = ({item}) => {
     minute: 'numeric',
     hour12: true,
   });
+  const destination = {
+    latitude: item.latitude,
+    longitude: item.longitude,
+  };
   return (
     <View className="bg-[#CCCDCD4D] p-5 border rounded-2xl mt-2 mb-2 ml-4 mr-4">
       <View className="flex-1 flex-row items-center mb-2">
@@ -58,19 +62,7 @@ const OrderItem = ({item}) => {
         <View className="flex-1 items-center">
           <Text className="text-xs text-white">Total Distance</Text>
           <Text className="font-bold text-2xl text-white">
-            {Math.round(
-              haversine(
-                {
-                  latitude: currentLocation.latitude,
-                  longitude: currentLocation.longitude,
-                },
-                {
-                  latitude: item.latitude,
-                  longitude: item.longitude,
-                },
-              ),
-            )}{' '}
-            KM
+            {Math.round(haversine(currentLocation, destination))} KM
           </Text>
         </View>
         <Text className="text-white">|</Text>
@@ -82,7 +74,15 @@ const OrderItem = ({item}) => {
 
       <TouchableOpacity
         className="flex-1 items-center justify-center ml-4 mr-4 p-3"
-        onPress={() => navigation.navigate('VerifyDelivery', {item})}>
+        onPress={() =>
+          navigation.navigate('VerifyDelivery', {
+            amount:item.amount,
+            currentLocation:currentLocation,
+            destination:destination,
+            delivery:item.delivery,
+            location:item.location
+          })
+        }>
         <View className="flex-1 items-center flex-row">
           <Text style={{color: '#3EEF85', fontSize: 13}}>Verify Delivery </Text>
           <Text style={{color: '#3EEF85', fontSize: 20}}>{'->'}</Text>

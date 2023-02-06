@@ -6,14 +6,13 @@ import {
   View,
   Text,
   Image,
-  Pressable,
 } from 'react-native';
 import React, { useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
 import OrderItem from '../components/OrderItem';
 import user from '../assets/images/user.png';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 
 const items = [
@@ -68,7 +67,6 @@ const items = [
 ];
 
 export const Home = () => {
-  const navigation = useNavigation();
   const isFocused = useIsFocused();
   const [rider_name, setRiderName] = React.useState('Rider');
 
@@ -99,7 +97,7 @@ export const Home = () => {
 
         <FlatList
           data={items}
-          renderItem={({ item }) => <OrderItem item={item} navigation={navigation} />}
+          renderItem={({ item }) => <OrderItem item={item} />}
           keyExtractor={item => item.id}
           style={{ height: 650 }}
         />

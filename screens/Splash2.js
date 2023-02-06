@@ -18,7 +18,6 @@ const Splash2 = () => {
           // console.log('CookieManager.get =>', cookies);
           // console.log(JSON.stringify(cookies))
           if (JSON.stringify(cookies)!='{}') {
-            // console.log("No cookies");
             navigation.navigate('MainScreen');
           }
           else{
