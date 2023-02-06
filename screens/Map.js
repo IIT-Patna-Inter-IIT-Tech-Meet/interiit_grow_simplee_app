@@ -6,6 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
 import MapViewDirections from 'react-native-maps-directions';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import { HOST } from './host';
 
 const styles = StyleSheet.create({
   container: {
@@ -271,7 +272,6 @@ const mapStyle = [
     ],
   },
 ];
-const host = '192.168.137.207:5000';
 export const Maps = () => {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -338,7 +338,7 @@ export const Maps = () => {
   const [points, setPoints] = useState([...deliveryPackages]);
   useEffect(() => {
     const fetchDeliveryDetails = async () => {
-      const response = await fetch(`http://${host}/package/route-packages`, {
+      const response = await fetch(`http://${HOST}/package/route-packages`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -366,7 +366,7 @@ export const Maps = () => {
 
   useEffect(() => {
     if(!currentLocation) return;
-    
+
     console.log({currentLocation});
     let nearestPoint = {
       latitude: points[0].customer.latitude,
@@ -378,12 +378,12 @@ export const Maps = () => {
         latitude: point.customer.latitude,
         longitude: point.customer.longitude,
       };
-      // if (
-      //   haversine(currentLocation, deliverPos) <
-      //   haversine(currentLocation, nearestPoint)
-      // ) {
-      //   nearestPoint = deliverPos;
-      // }
+      if (
+        haversine(currentLocation, deliverPos) <
+        haversine(currentLocation, nearestPoint)
+      ) {
+        nearestPoint = deliverPos;
+      }
     });
     setNearest(nearestPoint);
   }, [currentLocation, deliveries, pickups, points]);

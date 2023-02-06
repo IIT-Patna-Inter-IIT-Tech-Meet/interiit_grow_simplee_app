@@ -62,10 +62,10 @@ export const Login = () => {
 
         // const value = await AsyncStorage.getItem('rider_data');
         // console.log(value);
-        // CookieManager.get(`http://${HOST}/rider/login`)
-        //   .then((cookies) => {
-        //     console.log('CookieManager.get =>', cookies);
-        //   });
+        CookieManager.get(`http://${HOST}/rider/login`)
+          .then(async (cookies) => {
+            await AsyncStorage.setItem("rider_cookie",JSON.stringify(cookies));
+          });
         navigation.navigate('Main');
       }
       else if (response.status === 401) {

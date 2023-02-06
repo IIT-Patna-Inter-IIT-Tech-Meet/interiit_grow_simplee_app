@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import CookieManager from '@react-native-cookies/cookies';
 import {HOST} from './host';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
 // const host = '192.168.137.207:5000';
@@ -12,19 +13,21 @@ import {HOST} from './host';
 const Splash2 = () => {
   const navigation = useNavigation();
 
-  const handleLoginNavigation = () => {
+  const handleLoginNavigation =  () => {
   
-      CookieManager.get(`http://${HOST}/rider/login`)
-        .then((cookies) => {
-          // console.log('CookieManager.get =>', cookies);
-          // console.log(JSON.stringify(cookies))
-          if (JSON.stringify(cookies)!='{}') {
-            navigation.navigate('MainScreen');
-          }
-          else{
-            navigation.navigate('Login');
-          }
-        })
+      CookieManager.get(`http://${HOST}/rider/login`).then(async  cookies => {
+        if (cookies != {}) {
+          await AsyncStorage.setItem('rider_cookie', JSON.stringify(cookies));
+        }
+
+        // console.log('CookieManager.get =>', cookies);
+        // console.log(JSON.stringify(cookies))
+        if (JSON.stringify(cookies) != '{}') {
+          navigation.navigate('MainScreen');
+        } else {
+          navigation.navigate('Login');
+        }
+      });
   }
 
   return (
