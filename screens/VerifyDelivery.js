@@ -6,11 +6,11 @@ import square from '../assets/images/square.png';
 import line from '../assets/images/line.png';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import MapViewDirections from 'react-native-maps-directions';
-import {ActivityIndicator, Button} from 'react-native-paper';
+import {Button} from 'react-native-paper';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {HOST} from './host';
 const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
 
 const styles = StyleSheet.create({
@@ -224,9 +224,34 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export const VerifyDelivery = () => {
   const route = useRoute();
-  // console.log(route.params);
-  const { amount,currentLocation,destination,delivery,location } = route.params;
-  
+  const {currentLocation, destination, id, location, delivery} = route.params;
+  const navigation = useNavigation();
+  const handleConfirm = async () => {
+    let body = {
+      itemId: id,
+      delivery: delivery,
+    };
+    try {
+      const response = await fetch(`http://${HOST}/rider/register-package`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      const data = await response.json();
+      console.log(response);
+      navigation.navigate('Home');
+      // if(response.ok){
+      //   console.log(data);
+      //   navigation.navigate("Home");
+      // } else{
+      //   throw new Error("Something went wrong!");
+      // }
+    } catch (error) {
+      // alert(error.message);
+    }
+  };
   return (
     <SafeAreaView className="flex-1 bg-[#181920]">
       <View className="flex mt-8 h-full">
@@ -247,57 +272,55 @@ export const VerifyDelivery = () => {
             </Text>
           </View>
         </View>
-          <View style={styles.container}>
-            <MapView
-              style={styles.map}
-              customMapStyle={mapStyle}
-              initialRegion={{
-                ...currentLocation,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA,
-              }}
-              provider={PROVIDER_GOOGLE}>
-              <Marker
-                key={`delivery-${destination.latitude}-${destination.longitude}`}
-                coordinate={destination}
-                pinColor="red"
-              />
-              <Marker
-                key={`delivery-${currentLocation.latitude}-${currentLocation.longitude}`}
-                coordinate={currentLocation}
-                pinColor="green"
-              />
-              <MapViewDirections
-                origin={currentLocation}
-                destination={destination}
-                optimizeWaypoints={true}
-                apikey={GOOGLE_MAPS_API_KEY}
-                mode="DRIVING"
-                strokeWidth={4}
-                strokeColor="#39FF14"
-                onError={error => console.log(error)}
-              />
-            </MapView>
+        <View style={styles.container}>
+          <MapView
+            style={styles.map}
+            customMapStyle={mapStyle}
+            initialRegion={{
+              ...currentLocation,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
+            provider={PROVIDER_GOOGLE}>
+            <Marker
+              key={`delivery-${destination.latitude}-${destination.longitude}`}
+              coordinate={destination}
+              pinColor="red"
+            />
+            <Marker
+              key={`delivery-${currentLocation.latitude}-${currentLocation.longitude}`}
+              coordinate={currentLocation}
+              pinColor="green"
+            />
+            <MapViewDirections
+              origin={currentLocation}
+              destination={destination}
+              optimizeWaypoints={true}
+              apikey={GOOGLE_MAPS_API_KEY}
+              mode="DRIVING"
+              strokeWidth={4}
+              strokeColor="#39FF14"
+              onError={error => console.log(error)}
+            />
+          </MapView>
+        </View>
+        <View className="flex flex-col top-[50%] ml-8 mr-8">
+          <View className="flex justify-between flex-row">
+            <Text className="text-white text-lg font-semibold">Distance</Text>
+            <Text className="text-white text-lg font-semibold">
+              {Math.round(haversine(currentLocation, destination))}
+              KM
+            </Text>
           </View>
-          <View className="flex flex-col top-[50%] ml-8 mr-8">
-            <View className="flex justify-between flex-row">
-              <Text className="text-white text-lg font-semibold">Distance</Text>
-              <Text className="text-white text-lg font-semibold">
-                {Math.round(haversine(currentLocation, destination))}
-                KM
-              </Text>
-            </View>
-            <View className="flex justify-between flex-row">
-              <Text className="text-white text-lg font-semibold">
-                Status
-              </Text>
-              <Text className="text-white text-lg font-semibold">
-                Paid
-              </Text>
-            </View>
+          <View className="flex justify-between flex-row">
+            <Text className="text-white text-lg font-semibold">Status</Text>
+            <Text className="text-white text-lg font-semibold">Paid</Text>
           </View>
+        </View>
         <View className="flex items-center top-[50%]">
-          <Button className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5">
+          <Button
+            className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5"
+            onPress={handleConfirm}>
             <Text className="text-gray-900 text-lg">
               Confirm {delivery ? 'Delivery' : 'Pickup'}
             </Text>

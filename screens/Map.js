@@ -378,12 +378,12 @@ export const Maps = () => {
         latitude: point.customer.latitude,
         longitude: point.customer.longitude,
       };
-      // if (
-      //   haversine(currentLocation, deliverPos) <
-      //   haversine(currentLocation, nearestPoint)
-      // ) {
-      //   nearestPoint = deliverPos;
-      // }
+      if (
+        haversine(currentLocation, deliverPos) <
+        haversine(currentLocation, nearestPoint)
+      ) {
+        nearestPoint = deliverPos;
+      }
     });
     setNearest(nearestPoint);
   }, [currentLocation, deliveries, pickups, points]);
@@ -406,6 +406,7 @@ export const Maps = () => {
       destination: destination,
       delivery: point.delivery,
       location: point.customer.address,
+      id:point.id
     });
   };
   return (

@@ -79,7 +79,8 @@ const OrderItem = ({item}) => {
             currentLocation:currentLocation,
             destination:destination,
             delivery:item.delivery,
-            location:item.customer.address
+            location:item.customer.address,
+            id:item.id
           })
         }>
         <View className="flex-1 items-center flex-row">

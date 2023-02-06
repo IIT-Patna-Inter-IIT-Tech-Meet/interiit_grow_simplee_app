@@ -1,1 +1,2 @@
-module.exports.HOST = '192.168.144.120:5000';
+/* eslint-disable */
+module.exports.HOST = '172.16.188.192:5000';
