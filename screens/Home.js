@@ -62,6 +62,7 @@ export const Home = () => {
       });
       const data = await response.json();
       console.log(data);
+      setDeliveryPackages(data.packages)
     }
     if(isFocused){
       getRiderName();
