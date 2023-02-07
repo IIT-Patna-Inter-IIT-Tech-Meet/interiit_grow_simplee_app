@@ -240,7 +240,7 @@ export const VerifyDelivery = () => {
         body: JSON.stringify(body),
       });
       const data = await response.json();
-      console.log(response);
+      console.log(data);
       navigation.navigate('Home');
       // if(response.ok){
       //   console.log(data);
