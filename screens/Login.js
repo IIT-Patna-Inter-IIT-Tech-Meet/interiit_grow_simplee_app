@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import CookieManager from '@react-native-cookies/cookies';
 import AsyncStorage  from '@react-native-async-storage/async-storage';
 import {
@@ -14,6 +14,7 @@ import { Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {HOST} from './host';
+import { LoginContext } from '../Context/LoginContext';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
@@ -21,6 +22,7 @@ import {HOST} from './host';
 // *********************************************************
 
 export const Login = () => {
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -58,7 +60,7 @@ export const Login = () => {
         // await AsyncStorage.setItem("rider_bloodGroup",data.rider.bloodGroup);
 
 
-
+        
 
         // const value = await AsyncStorage.getItem('rider_data');
         // console.log(value);
@@ -66,23 +68,31 @@ export const Login = () => {
           .then(async (cookies) => {
             await AsyncStorage.setItem("rider_cookie",JSON.stringify(cookies));
           });
+          setLoggedIn(true);
         navigation.navigate('Main');
       }
       else if (response.status === 401) {
+        setLoggedIn(false);
         console.log("Unauthorized Access");
         console.log(data);
       }
       else if (response.status === 401) {
+        setLoggedIn(false);
+
         console.log("Malformed Request");
         console.log(data);
       }
 
       else {
+        setLoggedIn(false);
+
         console.log("Login failed");
         console.log(data);
       }
     }
     catch (err) {
+      setLoggedIn(false);
+
       console.log(err);
     }
   };

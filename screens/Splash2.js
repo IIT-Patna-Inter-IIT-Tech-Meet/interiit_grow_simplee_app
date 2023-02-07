@@ -1,17 +1,19 @@
 /* eslint-disable */
-import React from 'react';
+import React, {useContext} from 'react';
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import CookieManager from '@react-native-cookies/cookies';
 import {HOST} from './host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LoginContext } from '../Context/LoginContext';
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
 // const host = '192.168.137.207:5000';
 // *********************************************************
 const Splash2 = () => {
   const navigation = useNavigation();
+  const { loggedIn, setLoggedIn } = useContext(LoginContext);
 
   const handleLoginNavigation =  () => {
   
@@ -23,8 +25,10 @@ const Splash2 = () => {
         // console.log('CookieManager.get =>', cookies);
         // console.log(JSON.stringify(cookies))
         if (JSON.stringify(cookies) != '{}') {
+          setLoggedIn(true);
           navigation.navigate('MainScreen');
         } else {
+          setLoggedIn(false);
           navigation.navigate('Login');
         }
       });

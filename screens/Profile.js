@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import CookieManager from '@react-native-cookies/cookies';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {HOST} from './host';
+import {LoginContext} from '../Context/LoginContext';
 
 export const Profile = () => {
   const navigation = useNavigation();
@@ -14,6 +15,7 @@ export const Profile = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [UserId, setUserId] = useState('');
+  const {loggedIn, setLoggedIn} = useContext(LoginContext);
 
   useEffect(() => {
     const getRiderDetails = async () => {
@@ -38,6 +40,8 @@ export const Profile = () => {
         console.log(data);
         await CookieManager.clearAll();
         AsyncStorage.removeItem('rider_data');
+        AsyncStorage.removeItem('rider_cookie');
+        setLoggedIn(false);
         navigation.navigate('Login');
       } else {
         throw new Error('Something went wrong');
