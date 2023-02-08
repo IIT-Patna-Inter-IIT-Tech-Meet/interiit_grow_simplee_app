@@ -52,10 +52,6 @@ const OrderItem = ({item}) => {
             <Text className="text-white text-xs ml-1">{item.customer.address}</Text>
           </View>
         </View>
-
-        <Text className="flex-2 font-bold text-right text-3xl text-[#fcfcfc]">
-          Paid
-        </Text>
       </View>
 
       <View className="flex-1 flex-row bg-black border rounded-lg m-3 p-3">

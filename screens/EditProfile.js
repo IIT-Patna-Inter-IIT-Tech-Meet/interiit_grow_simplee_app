@@ -267,7 +267,7 @@ export const EditProfile = () => {
             <View className="flex items-center">
               <Button
                 className="border rounded-xl w-11/12 h-12 bg-[#00ff57] mt-4 mb-4"
-                onPress={handleUpdateCred}>
+                onPress={handleUpdate}>
                 <Text className="text-gray-900 text-lg">Update</Text>
               </Button>
             </View>

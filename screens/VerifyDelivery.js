@@ -256,18 +256,18 @@ export const VerifyDelivery = () => {
     <SafeAreaView className="flex-1 bg-[#181920]">
       <View className="flex mt-8 h-full">
         <View className="flex ml-6 align-middle ">
-          <View className="flex items-center flex-row">
+          <View className="flex items-center flex-row mb-3">
             <Image style={{width: 20, height: 20}} source={circle} />
-            <Text className="text-white text-lg font-semibold ml-5">
+            <Text className="text-white text-sm font-semibold ml-5">
               Your Current Location
             </Text>
           </View>
 
-          <Image source={line} width={2} height={18} style={{marginLeft: 8}} />
+          {/* <Image source={line} width={2} height={18} style={{marginLeft: 8}} /> */}
 
           <View className="flex items-center flex-row">
             <Image style={{width: 20, height: 20}} source={square} />
-            <Text className="text-white text-lg font-semibold ml-5">
+            <Text className="text-white text-sm font-semibold ml-5">
               {location}
             </Text>
           </View>
