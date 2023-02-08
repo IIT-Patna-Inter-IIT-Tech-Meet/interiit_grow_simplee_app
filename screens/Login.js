@@ -15,11 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {HOST} from './host';
 import { LoginContext } from '../Context/LoginContext';
-
-// *********************************************************
-// IMPORTANT: Change this to your local IP address
-// const host = '192.168.137.207:5000';
-// *********************************************************
+import Toast from 'react-native-toast-message';
 
 export const Login = () => {
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
@@ -27,6 +23,15 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
+
+  const loginError = (msg) => {
+    Toast.show({
+      type: 'error',
+      text1: 'Login Failed',
+      text2: msg,
+    });
+  };
+
   const handleLogin = async () => {
     let body = { "email": email, "password": password };
     // console.log(body);
@@ -74,25 +79,19 @@ export const Login = () => {
       else if (response.status === 401) {
         setLoggedIn(false);
         console.log("Unauthorized Access");
+        loginError("Invalid credentials");
         console.log(data);
       }
-      else if (response.status === 401) {
-        setLoggedIn(false);
-
-        console.log("Malformed Request");
-        console.log(data);
-      }
-
       else {
         setLoggedIn(false);
-
         console.log("Login failed");
+        loginError("Login failed. Recheck your credentials");
         console.log(data);
       }
     }
     catch (err) {
       setLoggedIn(false);
-
+      loginError(err)
       console.log(err);
     }
   };
@@ -155,7 +154,7 @@ export const Login = () => {
         <View className="flex flex-row pl-5 mt-14 w-3/5 justify-between">
           <Text className="text-base text-white">Forgot Password? </Text>
           {/* <TouchableOpacity > */}
-          <TouchableOpacity onPress={()=>navigation.navigate('ForgotPass')}>
+          <TouchableOpacity onPress={() => navigation.navigate('ForgotPass')}>
             <Text className="text-white font-bold text-base">
               Reset Password
             </Text>
@@ -168,6 +167,7 @@ export const Login = () => {
             <Text className="text-gray-900 text-lg">Login</Text>
           </Button>
         </View>
+        <Toast />
       </ScrollView>
     </SafeAreaView>
   );

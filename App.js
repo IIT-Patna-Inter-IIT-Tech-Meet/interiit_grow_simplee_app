@@ -23,11 +23,10 @@ export default function App() {
   const [wait, setWait] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  // const {logCon, setLogCon} = useContext(LoginContext);
-
   setTimeout(() => {
     setWait(true);
   }, 10000);
+
   async function cookie_set() {
     let tempCookie = await AsyncStorage.getItem('rider_cookie');
     if (tempCookie != JSON.stringify(cookie)) {
@@ -121,7 +120,7 @@ export default function App() {
   return (
     <WithSplashScreen isAppReady={isAppReady}>
       <PaperProvider>
-        <LoginContext.Provider value={{ loggedIn, setLoggedIn}}>
+        <LoginContext.Provider value={{loggedIn, setLoggedIn}}>
           <NavigationContainer>
             <RootNavigator />
           </NavigationContainer>

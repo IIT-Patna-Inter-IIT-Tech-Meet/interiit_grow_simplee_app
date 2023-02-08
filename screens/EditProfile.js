@@ -6,6 +6,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import tw from 'tailwind-react-native-classnames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 import {HOST} from './host';
 
 export const EditProfile = () => {
@@ -20,6 +21,22 @@ export const EditProfile = () => {
   const [email, setEmail] = useState('');
   const [bloodGroup, setBloodGroup] = useState('');
   const [onDuty, setOnDuty] = useState('');
+
+  const editSuccess = msg => {
+    Toast.show({
+      type: 'success',
+      text1: 'Profile Updated Successfully', 
+      text2: msg,
+    });
+  };
+
+  const editError = (msg) => {
+    Toast.show({
+      type: 'error',
+      text1: 'Profile Update Failed',
+      text2: msg,
+    });
+  };
 
   const fetchProfile = async () => {
     const data = await AsyncStorage.getItem('rider_data');
@@ -80,13 +97,13 @@ export const EditProfile = () => {
             onDuty: onDuty,
           }),
         );
-        alert('Profile Updated successfully!');
+        editSuccess()
       } else {
         console.log(data);
-        throw new Error('Something went wrong!');
+        editError(data)
       }
     } catch (error) {
-      alert(error.message);
+      editError(error.message)
     }
   };
   return (
@@ -275,6 +292,7 @@ export const EditProfile = () => {
           </>
         )}
       </ScrollView>
+      <Toast />
     </SafeAreaView>
   );
 };
