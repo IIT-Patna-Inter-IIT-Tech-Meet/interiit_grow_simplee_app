@@ -14,7 +14,7 @@ import OrderItem from '../components/OrderItem';
 import user from '../assets/images/user.png';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {HOST} from './host';
+import {HOST} from '../host';
 
 // const host = '192.168.137.207:5000';
 export const Home = () => {

@@ -6,7 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
 import MapViewDirections from 'react-native-maps-directions';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {HOST} from './host';
+import {HOST, GOOGLE_MAPS_API_KEY} from '../host';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,8 +30,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-
-const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
 
 const deliveries = [
   {

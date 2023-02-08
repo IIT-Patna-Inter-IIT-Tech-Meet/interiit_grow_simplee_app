@@ -4,7 +4,7 @@ import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import CookieManager from '@react-native-cookies/cookies';
-import {HOST} from './host';
+import {HOST} from '../host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginContext } from '../Context/LoginContext';
 // *********************************************************

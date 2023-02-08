@@ -6,7 +6,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import CookieManager from '@react-native-cookies/cookies';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {HOST} from './host';
+import {HOST} from '../host';
 import {LoginContext} from '../Context/LoginContext';
 
 export const Profile = () => {

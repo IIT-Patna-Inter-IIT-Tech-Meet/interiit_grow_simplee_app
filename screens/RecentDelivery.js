@@ -12,7 +12,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
 import RecentItem from '../components/RecentItem';
-import {HOST} from './host';
+import {HOST} from '../host';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address

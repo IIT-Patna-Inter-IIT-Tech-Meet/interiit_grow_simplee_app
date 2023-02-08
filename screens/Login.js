@@ -13,7 +13,7 @@ import {
 import { Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {HOST} from './host';
+import {HOST} from '../host';
 import { LoginContext } from '../Context/LoginContext';
 import Toast from 'react-native-toast-message';
 

@@ -7,7 +7,7 @@ import tw from 'tailwind-react-native-classnames';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import {HOST} from './host';
+import {HOST} from '../host';
 
 export const EditProfile = () => {
   const isFocused = useIsFocused();

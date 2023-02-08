@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
 import circle from '../assets/images/Ellipse.png';
 import square from '../assets/images/square.png';
@@ -10,7 +10,7 @@ import {Button} from 'react-native-paper';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import haversine from 'haversine';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {HOST} from './host';
+import {HOST} from '../host';
 const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
 
 const styles = StyleSheet.create({
