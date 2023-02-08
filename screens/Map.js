@@ -6,7 +6,7 @@ import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
 import MapViewDirections from 'react-native-maps-directions';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import { HOST } from './host';
+import {HOST} from './host';
 
 const styles = StyleSheet.create({
   container: {
@@ -278,7 +278,6 @@ export const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [route, setRoute] = useState(null);
   const [nearest, setNearest] = useState(null);
-  const [delivery, setDelivery] = useState(pickups);
   const [deliveryPackages, setDeliveryPackages] = useState([
     {
       id: '85',
@@ -335,19 +334,29 @@ export const Maps = () => {
       delivery: false,
     },
   ]);
-  const [points, setPoints] = useState([...deliveryPackages]);
+  const [points, setPoints] = useState([]);
   useEffect(() => {
-    const fetchDeliveryDetails = async () => {
-      const response = await fetch(`http://${HOST}/package/route-packages`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
-      // console.log(data);
+    const fetchDeliveryPoints = async () => {
+      try {
+        const response = await fetch(`http://${HOST}/package/route-packages`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          console.log(data);
+          setDeliveryPackages(data);
+          setPoints([...pickupPackages, ...data]);
+        } else {
+          throw new Error('Something went wrong!');
+        }
+      } catch (error) {
+        alert(error.message);
+      }
     };
     if (isFocused) {
-      fetchDeliveryDetails();
+      fetchDeliveryPoints();
     }
   }, [isFocused]);
 
@@ -365,7 +374,7 @@ export const Maps = () => {
   }, []);
 
   useEffect(() => {
-    if(!currentLocation) return;
+    if (!currentLocation) return;
 
     console.log({currentLocation});
     let nearestPoint = {
@@ -373,7 +382,6 @@ export const Maps = () => {
       longitude: points[0].customer.longitude,
     };
     points.forEach(point => {
-      // console.log(point);
       const deliverPos = {
         latitude: point.customer.latitude,
         longitude: point.customer.longitude,
@@ -386,15 +394,13 @@ export const Maps = () => {
       }
     });
     setNearest(nearestPoint);
-  }, [currentLocation, deliveries, pickups, points]);
+  }, [currentLocation, points]);
 
   const handleRouteReady = route => {
     setRoute(route);
   };
 
   const handleOnPress = point => {
-    // remove delivery point after delivery
-    // setDelivery(delivery.filter((delivery) => delivery !== point));
     console.log(point);
     const destination = {
       latitude: point.customer.latitude,
@@ -406,7 +412,7 @@ export const Maps = () => {
       destination: destination,
       delivery: point.delivery,
       location: point.customer.address,
-      id:point.id
+      id: point.id,
     });
   };
   return (

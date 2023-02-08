@@ -4,11 +4,11 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import circle from '../assets/images/Ellipse.png';
 import square from '../assets/images/square.png';
 import line from '../assets/images/line.png';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
 
-const OrderItem = ({item}) => {
+const OrderItem = ({ item }) => {
   const navigation = useNavigation();
   const [currentLocation, setCurrentLocation] = useState({});
 
