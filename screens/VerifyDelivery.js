@@ -10,8 +10,7 @@ import {Button} from 'react-native-paper';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import haversine from 'haversine';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {HOST} from './host';
-const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
+import {HOST, GOOGLE_MAPS_API_KEY} from '../host';
 
 const styles = StyleSheet.create({
   container: {

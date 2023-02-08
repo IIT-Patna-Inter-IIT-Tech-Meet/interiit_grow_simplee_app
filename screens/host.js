@@ -1,1 +1,0 @@
-module.exports.HOST = '192.168.138.64:5000';

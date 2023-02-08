@@ -14,7 +14,7 @@ import bg from '../assets/images/bg.png';
 import RecentItem from '../components/RecentItem';
 import user from '../assets/images/user.png';
 import arrow from '../assets/images/arrw.png';
-import {HOST} from './host';
+import {HOST} from '../host';
 
 // *********************************************************
 // IMPORTANT: Change this to your local IP address
