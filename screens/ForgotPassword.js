@@ -15,10 +15,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {HOST} from '../host';
 
-// *********************************************************
-// IMPORTANT: Change this to your local IP address
-// const host = '192.168.137.207:5000';
-// *********************************************************
 
 export const ForgotPass = () => {
   const navigation = useNavigation();
@@ -30,7 +26,6 @@ export const ForgotPass = () => {
   const [isOtpSecure, setIsOTPSecure] = useState(true);
   const handleSendOTP = async () => {
     let body = { "email": email };
-    // console.log(body);
     try {
       const response = await fetch(`http://${HOST}/rider/forgot-password`, {
         method: 'POST',
@@ -46,10 +41,7 @@ export const ForgotPass = () => {
       if (response.status === 200) {
         setEmailsent(true);
         console.log(data);
-        // CookieManager.get(`http://${HOST}/rider/login`)
-        //   .then((cookies) => {
-        //     console.log('CookieManager.get =>', cookies);
-        //   });
+        
       }
       else if (response.status === 401) {
         console.log("Unauthorized Access");

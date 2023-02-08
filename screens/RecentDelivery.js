@@ -14,17 +14,12 @@ import bg from '../assets/images/bg.png';
 import RecentItem from '../components/RecentItem';
 import {HOST} from '../host';
 
-// *********************************************************
-// IMPORTANT: Change this to your local IP address
-// const host = '192.168.137.207:5000';
-// *********************************************************
 
 const RecentDelivery = () => {
   const [recentData, setRecentData] = useState([]);
 
   useEffect(() => {
     const fetchRecentDelivery = async () => {
-      //to get the data of the past 24 hours
       let startDate = new Date();
       startDate.setDate(startDate.getDate() - 1);
       let body = {start: startDate};

@@ -316,7 +316,6 @@ export const Maps = () => {
         },
       });
       const data = await response.json();
-      // console.log(data);
     };
     if (isFocused) {
       fetchDeliveryDetails();
@@ -359,7 +358,6 @@ export const Maps = () => {
       longitude: points[0].customer.longitude,
     };
     points.forEach(point => {
-      // console.log(point);
       const deliverPos = {
         latitude: point.customer.latitude,
         longitude: point.customer.longitude,
@@ -379,8 +377,6 @@ export const Maps = () => {
   };
 
   const handleOnPress = point => {
-    // remove delivery point after delivery
-    // setDelivery(delivery.filter((delivery) => delivery !== point));
     console.log(point);
     const destination = {
       latitude: point.customer.latitude,
@@ -407,7 +403,6 @@ export const Maps = () => {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-          {/* {deliveries.map((delivery) =>{console.log(delivery);)})} */}
 
           {points.map(delivery => (
             <Marker
@@ -420,22 +415,8 @@ export const Maps = () => {
               onPress={() => handleOnPress(delivery)}
             />
           ))}
-          {/* {delivery.map(pickup => (
-            <Marker
-              key={`pickup-${pickup.latitude}-${pickup.longitude}`}
-              coordinate={pickup}
-              pinColor={'green'}
-              onPress={() => handleOnPress(pickup)}
-            />
-          ))} */}
-          {/* <Polyline
-            coordinates={route ? route.coordinates : []}
-            strokeWidth={4}
-            strokeColor="#000"
-          /> */}
-          {/* {console.log(currentLocation)} */}
+         
           <Marker coordinate={currentLocation} pinColor="yellow" />
-          {/* <Marker coordinate={nearest} /> */}
           <MapViewDirections
             origin={currentLocation}
             destination={nearest}

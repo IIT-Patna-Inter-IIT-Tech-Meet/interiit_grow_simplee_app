@@ -34,7 +34,6 @@ export const Login = () => {
 
   const handleLogin = async () => {
     let body = { "email": email, "password": password };
-    // console.log(body);
     try {
       const response = await fetch(`http://${HOST}/rider/login`, {
         method: 'POST',
@@ -43,10 +42,8 @@ export const Login = () => {
         },
         body: JSON.stringify(body),
       });
-      // Flushing the old cookies to prevent any issues
       await CookieManager.clearAll()
         .then((success) => {
-          // console.log('CookieManager.clearAll =>', success);
         });
 
       const data = await response.json();
@@ -54,21 +51,11 @@ export const Login = () => {
       if (response.status === 200) {
         await CookieManager.setFromResponse(`http://${HOST}/rider/login`, response.headers.get('set-cookie'))
           .then((res) => {
-            // `res` will be true or false depending on success.
-            // console.log('CookieManager.setFromResponse =>', res);
+
           });
         console.log(data);
         await AsyncStorage.setItem("rider_data",JSON.stringify(data.rider));
-        // await AsyncStorage.setItem("rider_email",data.rider.email);
-        // await AsyncStorage.setItem("rider_phone",data.rider.phoneno);
-        // await AsyncStorage.setItem("rider_id",data.rider._id);
-        // await AsyncStorage.setItem("rider_bloodGroup",data.rider.bloodGroup);
 
-
-        
-
-        // const value = await AsyncStorage.getItem('rider_data');
-        // console.log(value);
         CookieManager.get(`http://${HOST}/rider/login`)
           .then(async (cookies) => {
             await AsyncStorage.setItem("rider_cookie",JSON.stringify(cookies));

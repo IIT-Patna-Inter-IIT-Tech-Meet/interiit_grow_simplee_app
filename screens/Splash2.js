@@ -7,10 +7,7 @@ import CookieManager from '@react-native-cookies/cookies';
 import {HOST} from '../host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginContext } from '../Context/LoginContext';
-// *********************************************************
-// IMPORTANT: Change this to your local IP address
-// const host = '192.168.137.207:5000';
-// *********************************************************
+
 const Splash2 = () => {
   const navigation = useNavigation();
   const { loggedIn, setLoggedIn } = useContext(LoginContext);
@@ -22,8 +19,6 @@ const Splash2 = () => {
           await AsyncStorage.setItem('rider_cookie', JSON.stringify(cookies));
         }
 
-        // console.log('CookieManager.get =>', cookies);
-        // console.log(JSON.stringify(cookies))
         if (JSON.stringify(cookies) != '{}') {
           setLoggedIn(true);
           navigation.navigate('MainScreen');

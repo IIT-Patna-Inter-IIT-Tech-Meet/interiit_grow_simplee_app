@@ -17,7 +17,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LoginContext} from '../Context/LoginContext';
 import {HOST} from '../host';
 
-// const host = '192.168.137.207:5000';
 export const Home = () => {
   const isFocused = useIsFocused();
   const [rider_name, setRiderName] = useState('Rider');

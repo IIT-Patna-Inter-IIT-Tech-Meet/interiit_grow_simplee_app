@@ -242,14 +242,8 @@ export const VerifyDelivery = () => {
       const data = await response.json();
       console.log(data);
       navigation.navigate('Home');
-      // if(response.ok){
-      //   console.log(data);
-      //   navigation.navigate("Home");
-      // } else{
-      //   throw new Error("Something went wrong!");
-      // }
+     
     } catch (error) {
-      // alert(error.message);
     }
   };
   return (
@@ -263,7 +257,6 @@ export const VerifyDelivery = () => {
             </Text>
           </View>
 
-          {/* <Image source={line} width={2} height={18} style={{marginLeft: 8}} /> */}
 
           <View className="flex items-center flex-row">
             <Image style={{width: 20, height: 20}} source={square} />
