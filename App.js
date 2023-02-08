@@ -1,27 +1,30 @@
 /* eslint-disable */
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import React, { useRef, useEffect, useState, useContext } from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
-import { WithSplashScreen } from './components/Splash';
-import { RootNavigator } from './navigation/rootNavigator';
-import { Login } from './screens/Login';
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useRef, useEffect, useState, useContext} from 'react';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {WithSplashScreen} from './components/Splash';
+import {RootNavigator} from './navigation/rootNavigator';
+import {Login} from './screens/Login';
 import ProfilePage from './screens/Profile';
-import { io } from 'socket.io-client';
+import {io} from 'socket.io-client';
 import Geolocation from '@react-native-community/geolocation';
 import CookieManager from '@react-native-cookies/cookies';
-import { HOST } from './host';
+import {HOST} from './host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LoginContext } from './Context/LoginContext';
-
+import {LoginContext} from './Context/LoginContext';
 
 export default function App() {
   const [isAppReady, setIsAppReady] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState({ "latitude": 0, "longitude": 0 });
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
   const [cookie, setCookie] = useState({});
   const [socket, setSocket] = useState(null);
   const [wait, setWait] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [locations, setLocations] = useState([]);
 
   setTimeout(() => {
     setWait(true);
@@ -31,11 +34,11 @@ export default function App() {
     let tempCookie = await AsyncStorage.getItem('rider_cookie');
     if (tempCookie != JSON.stringify(cookie)) {
       console.log(JSON.parse(tempCookie));
-      console.log({ cookie });
-      setCookie(JSON.parse(tempCookie))
+      console.log({cookie});
+      setCookie(JSON.parse(tempCookie));
     }
   }
-    // cookie_set();
+  // cookie_set();
   useEffect(() => {
     cookie_set();
     // setInterval(async () => {
@@ -53,9 +56,8 @@ export default function App() {
       );
       console.log('socket created');
     }
-    console.log(loggedIn)
-    
-  },[cookie,loggedIn])
+    console.log(loggedIn);
+  }, [cookie, loggedIn]);
 
   useEffect(() => {
     setIsAppReady(true);
@@ -68,17 +70,14 @@ export default function App() {
         });
       },
       error => console.log(error),
-      { enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000 },
+      {enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000},
     );
 
     // get cookie from async storage if saved previously
-
-
   }, [wait]);
   // console.log(cookie)
   useEffect(() => {
     // console.log({cookie});
-    
 
     const interval = setInterval(() => {
       Geolocation.getCurrentPosition(
@@ -89,16 +88,14 @@ export default function App() {
           });
         },
         error => console.log(error),
-        { enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000 },
+        {enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000},
       );
     }, 5000);
-    return() => clearInterval(interval);
-
+    return () => clearInterval(interval);
   }, [cookie]);
 
   useEffect(() => {
     if (currentLocation && socket) {
-
       if (cookie != {} && cookie != null && cookie.jwt != null) {
         // console.log(`${cookie.jwt.name}=${cookie.jwt.value}`);
         console.log('emitting');
@@ -109,18 +106,22 @@ export default function App() {
           currentLocation.longitude,
         );
 
+        socket.on('pickup:get', data => {
+          setLocations(data);
+        });
+
         // console.log('emitted');
       } else {
-        console.log('not emitted')
+        console.log('not emitted');
       }
-
     }
-  }, [currentLocation,loggedIn])
+  }, [currentLocation, loggedIn]);
 
   return (
     <WithSplashScreen isAppReady={isAppReady}>
       <PaperProvider>
-        <LoginContext.Provider value={{loggedIn, setLoggedIn}}>
+        <LoginContext.Provider
+          value={{loggedIn, setLoggedIn, locations, setLocations}}>
           <NavigationContainer>
             <RootNavigator />
           </NavigationContainer>

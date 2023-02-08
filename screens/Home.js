@@ -7,13 +7,14 @@ import {
   Text,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import bg from '../assets/images/bg.png';
 import OrderItem from '../components/OrderItem';
 import user from '../assets/images/user.png';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LoginContext} from '../Context/LoginContext';
 import {HOST} from '../host';
 
 // const host = '192.168.137.207:5000';
@@ -22,6 +23,7 @@ export const Home = () => {
   const [rider_name, setRiderName] = useState('Rider');
   const [deliveryPackages, setDeliveryPackages] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const {locations, setLocations} = useContext(LoginContext);
 
   const fetchDeliveryDetails = async () => {
     try {
@@ -68,7 +70,7 @@ export const Home = () => {
           </View>
         </View>
 
-        {deliveryPackages.length == 0 ? (
+        {deliveryPackages.length == 0 && locations.length == 0 ? (
           <View style={{flex: 1, alignItems: 'center'}}>
             <Text style={{color: '#ffffff', fontSize: 16}}>
               No packages to deliver
@@ -81,7 +83,7 @@ export const Home = () => {
               fetchDeliveryDetails();
             }}
             refreshing={refreshing}
-            data={deliveryPackages}
+            data={locations.length == 0? deliveryPackages : locations}
             renderItem={({item}) => <OrderItem item={item} />}
             keyExtractor={item => item.id}
             style={{height: 650}}

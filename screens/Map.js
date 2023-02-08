@@ -31,6 +31,84 @@ const styles = StyleSheet.create({
   },
 });
 
+const deliveries = [
+  {
+    latitude: 28.5355,
+    longitude: 77.391,
+    amount: 500,
+    location: 'Noida, UP',
+    delivery: true,
+    timestamp: '2021-07-20T12:59:00.000Z',
+  },
+  {
+    latitude: 26.1542,
+    longitude: 85.8918,
+    amount: 800,
+    location: 'Darbhanga, Bihar',
+    delivery: true,
+    timestamp: '2021-09-27T12:47:00.000Z',
+  },
+  {
+    latitude: 26.7606,
+    longitude: 83.3732,
+    amount: 700,
+    location: 'Gorakhpur, UP',
+    delivery: true,
+    timestamp: '2022-06-23T12:40:00.000Z',
+  },
+  {
+    latitude: 25.4723,
+    longitude: 85.7082,
+    amount: 580,
+    location: 'Barh, Bihar',
+    delivery: true,
+    timestamp: '2021-06-20T12:40:00.000Z',
+  },
+  {
+    latitude: 19.076,
+    longitude: 72.8777,
+    amount: 590,
+    location: 'Mumbai, Maharastra',
+    delivery: true,
+    timestamp: '2021-05-20T12:00:00.000Z',
+  },
+  {
+    latitude: 22.5726,
+    longitude: 88.3639,
+    amount: 500,
+    location: 'Kolkata, West Bengal',
+    delivery: true,
+    timestamp: '2021-05-22T13:10:00.000Z',
+  },
+];
+
+const pickups = [
+  {
+    latitude: 25.56254,
+    longitude: 84.84521,
+    amount: 500,
+    location: 'Patna pickup address',
+    delivery: false,
+    timestamp: '2021-07-20T12:59:00.000Z',
+  },
+  {
+    latitude: 25.51247,
+    longitude: 84.8621,
+    amount: 500,
+    location: 'Patna pickup address',
+    delivery: false,
+    timestamp: '2021-07-20T12:59:00.000Z',
+  },
+  {
+    latitude: 25.52354,
+    longitude: 84.87415,
+    amount: 500,
+    location: 'Patna pickup address',
+    delivery: false,
+    timestamp: '2021-07-20T12:59:00.000Z',
+  },
+];
+
 const mapStyle = [
   {
     elementType: 'geometry',
@@ -198,33 +276,8 @@ export const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [route, setRoute] = useState(null);
   const [nearest, setNearest] = useState(null);
+  const [delivery, setDelivery] = useState(pickups);
   const [deliveryPackages, setDeliveryPackages] = useState([
-    {
-      id: '85',
-      AWB: '123!@#',
-      EDD: '2021-05-22T13:10:00.000Z',
-      deliveryTimestamp: '',
-      customer: {
-        address: 'Noida, UP',
-        name: 'Aditya Kumar',
-        latitude: 25.5344545,
-        longitude: 84.8550015,
-      },
-      delivery: true,
-    },
-    {
-      id: '13',
-      AWB: '123r@#',
-      EDD: '2021-05-23T13:50:00.000Z',
-      deliveryTimestamp: '',
-      customer: {
-        address: 'Barh, Bihar',
-        name: 'Anurag Deo',
-        latitude: 25.5344542,
-        longitude: 84.8550014,
-      },
-      delivery: true,
-    },
   ]);
   const [pickupPackages, setPickupPackages] = useState([
     {
@@ -254,29 +307,19 @@ export const Maps = () => {
       delivery: false,
     },
   ]);
-  const [points, setPoints] = useState([]);
+  const [points, setPoints] = useState([...deliveryPackages]);
   useEffect(() => {
-    const fetchDeliveryPoints = async () => {
-      try {
-        const response = await fetch(`http://${HOST}/package/route-packages`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          console.log(data);
-          setDeliveryPackages(data);
-          setPoints([...pickupPackages, ...data]);
-        } else {
-          throw new Error('Something went wrong!');
-        }
-      } catch (error) {
-        alert(error.message);
-      }
+    const fetchDeliveryDetails = async () => {
+      const response = await fetch(`http://${HOST}/package/route-packages`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      // console.log(data);
     };
     if (isFocused) {
-      fetchDeliveryPoints();
+      fetchDeliveryDetails();
     }
   }, [isFocused]);
 
@@ -294,7 +337,21 @@ export const Maps = () => {
   }, []);
 
   useEffect(() => {
-    if (!currentLocation) return;
+    if (!currentLocation || points.length == 0) return;
+
+    setDeliveryPackages([{
+      id: '85',
+      AWB: '123!@#',
+      EDD: '2021-05-22T13:10:00.000Z',
+      deliveryTimestamp: '',
+      customer: {
+        address: 'Noida, UP',
+        name: 'Aditya Kumar',
+        latitude: currentLocation ? currentLocation.latitude : 75.5344545,
+        longitude: currentLocation ? currentLocation.longitude : 84.8550015,
+      },
+      delivery: true,
+    }]);
 
     console.log({currentLocation});
     let nearestPoint = {
@@ -302,6 +359,7 @@ export const Maps = () => {
       longitude: points[0].customer.longitude,
     };
     points.forEach(point => {
+      // console.log(point);
       const deliverPos = {
         latitude: point.customer.latitude,
         longitude: point.customer.longitude,
@@ -314,13 +372,15 @@ export const Maps = () => {
       }
     });
     setNearest(nearestPoint);
-  }, [currentLocation, points]);
+  }, [currentLocation, deliveries, pickups, points]);
 
   const handleRouteReady = route => {
     setRoute(route);
   };
 
   const handleOnPress = point => {
+    // remove delivery point after delivery
+    // setDelivery(delivery.filter((delivery) => delivery !== point));
     console.log(point);
     const destination = {
       latitude: point.customer.latitude,
@@ -337,7 +397,7 @@ export const Maps = () => {
   };
   return (
     <View style={styles.container}>
-      {currentLocation && nearest ? (
+      {currentLocation ? (
         <MapView
           style={styles.map}
           customMapStyle={mapStyle}
