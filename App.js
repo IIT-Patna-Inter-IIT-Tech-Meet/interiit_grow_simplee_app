@@ -10,7 +10,7 @@ import ProfilePage from './screens/Profile';
 import { io } from 'socket.io-client';
 import Geolocation from '@react-native-community/geolocation';
 import CookieManager from '@react-native-cookies/cookies';
-import { HOST } from './host';
+import { HOST } from '../host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginContext } from './Context/LoginContext';
 

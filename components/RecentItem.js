@@ -1,113 +1,57 @@
+/* eslint-disable */
 import React from 'react';
-import {View, StyleSheet, Text, Pressable, Image} from 'react-native';
+import { View, Text, Image } from 'react-native';
 import circle from '../assets/images/Ellipse.png';
 import square from '../assets/images/square.png';
 import line from '../assets/images/line.png';
 
-const RecentItem = ({item,navigation}) => {
+const RecentItem = ({item}) => {
+  const timeStamp = item.delivery
+    ? item.deliveryTimestamp
+    : item.pickupTimestamp;
+  const deliverBy = timeStamp.slice(0, -1).concat('+05:30');
+  const time = new Date(deliverBy).toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
   return (
-    <View style={styles.item}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginBottom: 10,
-        }}>
+    <View className="bg-[#CCCDCD4D] p-5 border rounded-2xl mt-2 mb-2 ml-4 mr-4">
+      <View className="flex-1 flex-row items-center mb-2">
         <View style={{flex: 3}}>
-          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-            <Image style={{width: 10, height: 10}} source={circle} />
-            <Text style={styles.location}>{item.customer.name}</Text>
+          <View className="flex-1 flex-row items-center">
+            <Image className="w-2.5 h-2.5" source={circle} />
+            <Text className="text-white text-xs ml-1">
+              {item.customer.name}
+            </Text>
           </View>
 
-          <Image source={line} width={2} height={18} style={{marginLeft: 4}} />
+          <Image source={line} className="ml-1 w-[2px] h-4" />
 
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <Image
-              style={{width: 10, height: 10, marginTop: 3}}
-              source={square}
-            />
-            <Text style={styles.location}>{item.customer.address}</Text>
+          <View className="flex-1 flex-row">
+            <Image className="mt-1 w-3 h-3" source={square} />
+            <Text className="text-white text-xs ml-1">
+              {item.customer.address}
+            </Text>
           </View>
-        </View>
-
-        <Text style={styles.title}>{item.id}</Text>
-      </View>
-
-      <View style={styles.info}>
-        {/* <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={{color: '#ffffff', fontSize: 10}}>Total Distance</Text>
-          <Text style={{color: '#ffffff', fontSize: 24, fontWeight: 'bold'}}>
-            {item.distance}
-          </Text>
-        </View> */}
-        {/* <Text style={{color: '#ffffff'}}>|</Text> */}
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={{color: '#ffffff', fontSize: 10}}>Delivered On</Text>
-          <Text style={{color: '#ffffff', fontSize: 24, fontWeight: 'bold'}}>
-            {item.deliveryTimestamp}
-          </Text>
-        </View>
-        <View style={{flex: 1, alignItems: 'center'}}>
-          <Text style={{color: '#ffffff', fontSize: 10}}>AWB No.</Text>
-          <Text style={{color: '#ffffff', fontSize: 24, fontWeight: 'bold'}}>
-            {item.AWB}
-          </Text>
         </View>
       </View>
 
-      <Pressable style={styles.btn} onPress={() => navigation.navigate('VerifyDelivery')}>
-        <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={{color: '#3EEF85', fontSize: 13}}>Verify Delivery </Text>
-          <Text style={{color: '#3EEF85', fontSize: 20}}>{'>'}</Text>
+      <View className="flex-1 flex-row bg-black border rounded-lg m-3 p-3">
+        <View className="flex-1 items-center">
+          <Text className="text-xs text-white">
+            {item.delivery ? 'Delivered On' : 'Picked Up On'}
+          </Text>
+          <Text className="font-bold text-2xl text-white">{time}</Text>
         </View>
-      </Pressable>
+        <Text className="text-white">|</Text>
+        <View className="flex-1 items-center">
+          <Text className="text-xs text-white">AWB No.</Text>
+          <Text className="font-bold text-2xl text-white">{item.AWB}</Text>
+        </View>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#CCCDCD4D',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 15,
-  },
-  title: {
-    fontSize: 30,
-    color: '#fcfcfc',
-    fontWeight: 'bold',
-    textAlign: 'right',
-    flex: 2,
-  },
-  location: {
-    fontSize: 12,
-    color: '#ffffff',
-    marginLeft: 5,
-  },
-  price: {
-    fontSize: 16,
-    color: '#a1a4b2',
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  info: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#000000',
-    margin: 10,
-    padding: 10,
-    borderRadius: 10,
-  },
-  btn: {
-    padding: 10,
-    marginHorizontal: 16,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-});
 
 export default RecentItem;
