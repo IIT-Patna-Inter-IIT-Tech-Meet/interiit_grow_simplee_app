@@ -296,7 +296,7 @@ export const VerifyDelivery = () => {
         <View className="flex items-center top-[50%]">
           <Button
             className="border rounded-xl w-11/12 h-12 bg-[#04F968] mt-5"
-            onPress={handleConfirm}>
+            onPress={handleConfirm} disabled={!(currentLocation===destination)}>
             <Text className="text-gray-900 text-lg">
               Confirm {delivery ? 'Delivery' : 'Pickup'}
             </Text>
