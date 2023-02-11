@@ -1,17 +1,15 @@
 /* eslint-disable */
 import React from 'react';
-import {View, StyleSheet, Text, Image, Dimensions} from 'react-native';
+import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
 import circle from '../assets/images/Ellipse.png';
 import square from '../assets/images/square.png';
-import line from '../assets/images/line.png';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import MapViewDirections from 'react-native-maps-directions';
 import {Button} from 'react-native-paper';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import haversine from 'haversine';
 import {useNavigation, useRoute} from '@react-navigation/native';
-import {HOST} from '../host';
-const GOOGLE_MAPS_API_KEY = 'AIzaSyA8UHc-D4VOdkBY1Hi-SgWScoMrijBAgYg';
+import { HOST, GOOGLE_MAPS_API_KEY } from '../host';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,24 +35,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-
-const item = {
-  id: '1',
-  item: 'Milk',
-  location: 'B-1, 2nd Floor, Sector 63, Noida, Uttar Pradesh 201301',
-  location_coordinates: {
-    latitude: 25.56254,
-    longitude: 84.86152,
-  },
-  warehouse: 'Patna Goods inventory',
-  warehouse_coordinates: {
-    latitude: 25.52354,
-    longitude: 84.87875,
-  },
-  price: '100',
-  DeliverBy: '12:00 PM',
-  distance: '110 Km',
-};
 
 const mapStyle = [
   {
@@ -217,14 +197,14 @@ const mapStyle = [
     ],
   },
 ];
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export const VerifyDelivery = () => {
   const route = useRoute();
-  const {currentLocation, destination, id, location, delivery} = route.params;
+  const { currentLocation, destination, id, location, delivery } = route.params;
   const navigation = useNavigation();
   const handleConfirm = async () => {
     let body = {
@@ -240,10 +220,14 @@ export const VerifyDelivery = () => {
         body: JSON.stringify(body),
       });
       const data = await response.json();
-      console.log(data);
-      navigation.navigate('Home');
-     
+      if (response.ok) {
+        console.log(data);
+        navigation.navigate('Home');
+      } else {
+        throw new Error('Something went wrong');
+      }
     } catch (error) {
+      alert(error.message);
     }
   };
   return (
@@ -256,7 +240,6 @@ export const VerifyDelivery = () => {
               Your Current Location
             </Text>
           </View>
-
 
           <View className="flex items-center flex-row">
             <Image style={{width: 20, height: 20}} source={square} />

@@ -22,7 +22,7 @@ export const Home = () => {
   const [rider_name, setRiderName] = useState('Rider');
   const [deliveryPackages, setDeliveryPackages] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const {locations, setLocations} = useContext(LoginContext);
+  const { locations, setLocations } = useContext(LoginContext);
 
   const fetchDeliveryDetails = async () => {
     try {
@@ -37,8 +37,7 @@ export const Home = () => {
     } catch (error) {
       console.log(error);
     }
-
-    setRefreshing(false)
+    setRefreshing(false);
   };
 
   useEffect(() => {
@@ -82,7 +81,7 @@ export const Home = () => {
               fetchDeliveryDetails();
             }}
             refreshing={refreshing}
-            data={locations.length == 0? deliveryPackages : locations}
+            data={locations.length == 0 ? deliveryPackages : locations}
             renderItem={({item}) => <OrderItem item={item} />}
             keyExtractor={item => item.id}
             style={{height: 650}}

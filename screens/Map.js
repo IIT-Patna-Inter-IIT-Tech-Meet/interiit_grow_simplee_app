@@ -1,12 +1,12 @@
 /* eslint-disable */
 import {View, Text, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import MapView, {Marker, Polyline} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import haversine from 'haversine';
 import MapViewDirections from 'react-native-maps-directions';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {HOST, GOOGLE_MAPS_API_KEY} from '../host';
+import { HOST, GOOGLE_MAPS_API_KEY } from '../host';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,83 +31,82 @@ const styles = StyleSheet.create({
   },
 });
 
-const deliveries = [
-  {
-    latitude: 28.5355,
-    longitude: 77.391,
-    amount: 500,
-    location: 'Noida, UP',
-    delivery: true,
-    timestamp: '2021-07-20T12:59:00.000Z',
-  },
-  {
-    latitude: 26.1542,
-    longitude: 85.8918,
-    amount: 800,
-    location: 'Darbhanga, Bihar',
-    delivery: true,
-    timestamp: '2021-09-27T12:47:00.000Z',
-  },
-  {
-    latitude: 26.7606,
-    longitude: 83.3732,
-    amount: 700,
-    location: 'Gorakhpur, UP',
-    delivery: true,
-    timestamp: '2022-06-23T12:40:00.000Z',
-  },
-  {
-    latitude: 25.4723,
-    longitude: 85.7082,
-    amount: 580,
-    location: 'Barh, Bihar',
-    delivery: true,
-    timestamp: '2021-06-20T12:40:00.000Z',
-  },
-  {
-    latitude: 19.076,
-    longitude: 72.8777,
-    amount: 590,
-    location: 'Mumbai, Maharastra',
-    delivery: true,
-    timestamp: '2021-05-20T12:00:00.000Z',
-  },
-  {
-    latitude: 22.5726,
-    longitude: 88.3639,
-    amount: 500,
-    location: 'Kolkata, West Bengal',
-    delivery: true,
-    timestamp: '2021-05-22T13:10:00.000Z',
-  },
-];
-
-const pickups = [
-  {
-    latitude: 25.56254,
-    longitude: 84.84521,
-    amount: 500,
-    location: 'Patna pickup address',
-    delivery: false,
-    timestamp: '2021-07-20T12:59:00.000Z',
-  },
-  {
-    latitude: 25.51247,
-    longitude: 84.8621,
-    amount: 500,
-    location: 'Patna pickup address',
-    delivery: false,
-    timestamp: '2021-07-20T12:59:00.000Z',
-  },
-  {
-    latitude: 25.52354,
-    longitude: 84.87415,
-    amount: 500,
-    location: 'Patna pickup address',
-    delivery: false,
-    timestamp: '2021-07-20T12:59:00.000Z',
-  },
-];
+// const deliveries = [
+//   {
+//     latitude: 28.5355,
+//     longitude: 77.391,
+//     amount: 500,
+//     location: 'Noida, UP',
+//     delivery: true,
+//     timestamp: '2021-07-20T12:59:00.000Z',
+//   },
+//   {
+//     latitude: 26.1542,
+//     longitude: 85.8918,
+//     amount: 800,
+//     location: 'Darbhanga, Bihar',
+//     delivery: true,
+//     timestamp: '2021-09-27T12:47:00.000Z',
+//   },
+//   {
+//     latitude: 26.7606,
+//     longitude: 83.3732,
+//     amount: 700,
+//     location: 'Gorakhpur, UP',
+//     delivery: true,
+//     timestamp: '2022-06-23T12:40:00.000Z',
+//   },
+//   {
+//     latitude: 25.4723,
+//     longitude: 85.7082,
+//     amount: 580,
+//     location: 'Barh, Bihar',
+//     delivery: true,
+//     timestamp: '2021-06-20T12:40:00.000Z',
+//   },
+//   {
+//     latitude: 19.076,
+//     longitude: 72.8777,
+//     amount: 590,
+//     location: 'Mumbai, Maharastra',
+//     delivery: true,
+//     timestamp: '2021-05-20T12:00:00.000Z',
+//   },
+//   {
+//     latitude: 22.5726,
+//     longitude: 88.3639,
+//     amount: 500,
+//     location: 'Kolkata, West Bengal',
+//     delivery: true,
+//     timestamp: '2021-05-22T13:10:00.000Z',
+//   },
+// ];
+// const pickups = [
+//   {
+//     latitude: 25.56254,
+//     longitude: 84.84521,
+//     amount: 500,
+//     location: 'Patna pickup address',
+//     delivery: false,
+//     timestamp: '2021-07-20T12:59:00.000Z',
+//   },
+//   {
+//     latitude: 25.51247,
+//     longitude: 84.8621,
+//     amount: 500,
+//     location: 'Patna pickup address',
+//     delivery: false,
+//     timestamp: '2021-07-20T12:59:00.000Z',
+//   },
+//   {
+//     latitude: 25.52354,
+//     longitude: 84.87415,
+//     amount: 500,
+//     location: 'Patna pickup address',
+//     delivery: false,
+//     timestamp: '2021-07-20T12:59:00.000Z',
+//   },
+// ];
 
 const mapStyle = [
   {
@@ -276,46 +275,56 @@ export const Maps = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [route, setRoute] = useState(null);
   const [nearest, setNearest] = useState(null);
-  const [delivery, setDelivery] = useState(pickups);
-  const [deliveryPackages, setDeliveryPackages] = useState([
-  ]);
-  const [pickupPackages, setPickupPackages] = useState([
-    {
-      id: '84',
-      AWB: '123!@#',
-      EDP: '2021-05-22T13:10:00.000Z',
-      pickupTimestamp: '',
-      customer: {
-        address: 'Noida, UP',
-        name: 'Aditya Kumar',
-        latitude: 25.5344545,
-        longitude: 84.8550015,
-      },
-      delivery: false,
-    },
-    {
-      id: '23',
-      AWB: '123r@#',
-      EDP: '2021-05-23T13:50:00.000Z',
-      pickupTimestamp: '',
-      customer: {
-        address: 'Barh, Bihar',
-        name: 'Anurag Deo',
-        latitude: 25.5344542,
-        longitude: 84.8550014,
-      },
-      delivery: false,
-    },
-  ]);
-  const [points, setPoints] = useState([...deliveryPackages]);
+  const {locations, setLocations} = useContext(LoginContext);
+  const [deliveryPackages, setDeliveryPackages] = useState([]);
+  // const [delivery, setDelivery] = useState(pickups);
+  // const [pickupPackages, setPickupPackages] = useState([
+  //   {
+  //     id: '84',
+  //     AWB: '123!@#',
+  //     EDP: '2021-05-22T13:10:00.000Z',
+  //     pickupTimestamp: '',
+  //     customer: {
+  //       address: 'Noida, UP',
+  //       name: 'Aditya Kumar',
+  //       latitude: 25.5344545,
+  //       longitude: 84.8550015,
+  //     },
+  //     delivery: false,
+  //   },
+  //   {
+  //     id: '23',
+  //     AWB: '123r@#',
+  //     EDP: '2021-05-23T13:50:00.000Z',
+  //     pickupTimestamp: '',
+  //     customer: {
+  //       address: 'Barh, Bihar',
+  //       name: 'Anurag Deo',
+  //       latitude: 25.5344542,
+  //       longitude: 84.8550014,
+  //     },
+  //     delivery: false,
+  //   },
+  // ]);
+  const [points, setPoints] = useState(locations);
   useEffect(() => {
     const fetchDeliveryDetails = async () => {
-      const response = await fetch(`http://${HOST}/package/route-packages`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await response.json();
+      try {
+        const response = await fetch(`http://${HOST}/package/route-packages`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        // setPoints([...points, data]);
+        if (response.ok) {
+          setDeliveryPackages(data);
+        } else {
+          throw new Error('Something went wrong!');
+        }
+      } catch (error) {
+        alert(error.message);
+      }
     };
     if (isFocused) {
       fetchDeliveryDetails();
@@ -338,39 +347,60 @@ export const Maps = () => {
   useEffect(() => {
     if (!currentLocation || points.length == 0) return;
 
-    setDeliveryPackages([{
-      id: '85',
-      AWB: '123!@#',
-      EDD: '2021-05-22T13:10:00.000Z',
-      deliveryTimestamp: '',
-      customer: {
-        address: 'Noida, UP',
-        name: 'Aditya Kumar',
-        latitude: currentLocation ? currentLocation.latitude : 75.5344545,
-        longitude: currentLocation ? currentLocation.longitude : 84.8550015,
-      },
-      delivery: true,
-    }]);
+    // setDeliveryPackages([{
+    //   id: '85',
+    //   AWB: '123!@#',
+    //   EDD: '2021-05-22T13:10:00.000Z',
+    //   deliveryTimestamp: '',
+    //   customer: {
+    //     address: 'Noida, UP',
+    //     name: 'Aditya Kumar',
+    //     latitude: currentLocation ? currentLocation.latitude : 75.5344545,
+    //     longitude: currentLocation ? currentLocation.longitude : 84.8550015,
+    //   },
+    //   delivery: true,
+    // }]);
 
     console.log({currentLocation});
     let nearestPoint = {
-      latitude: points[0].customer.latitude,
-      longitude: points[0].customer.longitude,
+      latitude:
+        locations.length == 0
+          ? deliveryPackages[0].customer.latitude
+          : points[0].customer.latitude,
+      longitude:
+        locations.length == 0
+          ? deliveryPackages[0].customer.longitude
+          : points[0].customer.longitude,
     };
-    points.forEach(point => {
-      const deliverPos = {
-        latitude: point.customer.latitude,
-        longitude: point.customer.longitude,
-      };
-      if (
-        haversine(currentLocation, deliverPos) <
-        haversine(currentLocation, nearestPoint)
-      ) {
-        nearestPoint = deliverPos;
-      }
-    });
+    // if (locations.length == 0) {
+    //   deliveryPackages.forEach(point => {
+    //     const deliverPos = {
+    //       latitude: point.customer.latitude,
+    //       longitude: point.customer.longitude,
+    //     };
+    //     if (
+    //       haversine(currentLocation, deliverPos) <
+    //       haversine(currentLocation, nearestPoint)
+    //     ) {
+    //       nearestPoint = deliverPos;
+    //     }
+    //   });
+    // } else {
+    //   points.forEach(point => {
+    //     const deliverPos = {
+    //       latitude: point.customer.latitude,
+    //       longitude: point.customer.longitude,
+    //     };
+    //     if (
+    //       haversine(currentLocation, deliverPos) <
+    //       haversine(currentLocation, nearestPoint)
+    //     ) {
+    //       nearestPoint = deliverPos;
+    //     }
+    //   });
+    // }
     setNearest(nearestPoint);
-  }, [currentLocation, deliveries, pickups, points]);
+  }, [currentLocation, points, locations, deliveryPackages]);
 
   const handleRouteReady = route => {
     setRoute(route);
@@ -403,7 +433,6 @@ export const Maps = () => {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-
           {points.map(delivery => (
             <Marker
               key={`delivery-${delivery.customer.latitude}-${delivery.customer.longitude}`}
@@ -415,7 +444,7 @@ export const Maps = () => {
               onPress={() => handleOnPress(delivery)}
             />
           ))}
-         
+
           <Marker coordinate={currentLocation} pinColor="yellow" />
           <MapViewDirections
             origin={currentLocation}

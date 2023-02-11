@@ -5,11 +5,8 @@ import React, {useRef, useEffect, useState, useContext} from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {WithSplashScreen} from './components/Splash';
 import {RootNavigator} from './navigation/rootNavigator';
-import {Login} from './screens/Login';
-import ProfilePage from './screens/Profile';
 import {io} from 'socket.io-client';
 import Geolocation from '@react-native-community/geolocation';
-import CookieManager from '@react-native-cookies/cookies';
 import {HOST} from './host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LoginContext} from './Context/LoginContext';
@@ -38,13 +35,8 @@ export default function App() {
       setCookie(JSON.parse(tempCookie));
     }
   }
-  // cookie_set();
   useEffect(() => {
     cookie_set();
-    // setInterval(async () => {
-    //   setCookie(JSON.parse(await AsyncStorage.getItem('rider_cookie')))
-    //   // console.log({cookie})
-    // }, 20000);
     if (cookie != {} && cookie != null && cookie.jwt != null) {
       setSocket(
         io(`http://${HOST}`, {
@@ -73,11 +65,8 @@ export default function App() {
       {enableHighAccuracy: false, timeout: 30000, maximumAge: 3600000},
     );
 
-    // get cookie from async storage if saved previously
   }, [wait]);
-  // console.log(cookie)
   useEffect(() => {
-    // console.log({cookie});
 
     const interval = setInterval(() => {
       Geolocation.getCurrentPosition(
